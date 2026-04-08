@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+server.log
+server.err
+cloudflared.log
+cloudflared.err
+token.json
+credentials.json
+*.tmp
+tools/

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organizador de Entregas</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">PDF + Word + Google Calendar</p>
+        <h1>Convierte tus fechas de entrega en recordatorios reales.</h1>
+        <p class="lead">
+          Sube un documento, detecta tareas con fecha y crea automáticamente en Google Calendar
+          la entrega final y un aviso con los días de anticipación que tú elijas.
+        </p>
+      </div>
+      <div class="hero-card">
+        <h2>Cómo te ayuda</h2>
+        <ul>
+          <li>Lee archivos <strong>.pdf</strong> y <strong>.docx</strong></li>
+          <li>Detecta fechas como <strong>10/04</strong> o <strong>10 de abril</strong></li>
+          <li>Crea un evento de entrega</li>
+          <li>Programa preparación con un aviso configurable</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel">
+      <form action="/analyze" method="post" enctype="multipart/form-data" class="upload-form">
+        <label for="file" class="input-label">Selecciona tu archivo académico</label>
+        <input id="file" name="file" type="file" accept=".pdf,.docx" required>
+        <label for="reminder_days" class="input-label">Días de anticipación para el aviso</label>
+        <input
+          id="reminder_days"
+          name="reminder_days"
+          type="number"
+          min="0"
+          value="{{ reminder_days }}"
+          class="days-input"
+          required
+        >
+        <button type="submit">Analizar documento</button>
+      </form>
+
+      {% if error %}
+        <div class="message error">{{ error }}</div>
+      {% endif %}
+
+      {% if success %}
+        <div class="message success">{{ success }}</div>
+      {% endif %}
+    </section>
+
+    <section class="results">
+      <div class="results-header">
+        <h2>Entregas detectadas</h2>
+        <p>Revisa antes de sincronizar con Google Calendar.</p>
+      </div>
+
+      {% if deliveries %}
+        <div class="cards">
+          {% for delivery in deliveries %}
+            <article class="card">
+              <div class="card-date">{{ delivery.due_date_iso }}</div>
+              <h3>{{ delivery.title }}</h3>
+              <p><strong>Recordatorio:</strong> {{ delivery.reminder_date_iso }} ({{ reminder_days }} días antes)</p>
+              <p class="source">{{ delivery.source_line }}</p>
+            </article>
+          {% endfor %}
+        </div>
+
+        <form action="/sync" method="post" class="sync-form">
+          <textarea name="payload" hidden>{{ raw_payload }}</textarea>
+          <input
+            name="reminder_days"
+            type="number"
+            min="0"
+            value="{{ reminder_days }}"
+            class="days-input"
+            required
+          >
+          <button type="submit" class="sync-button">Sincronizar con Google Calendar</button>
+        </form>
+      {% else %}
+        <div class="empty-state">
+          <p>Aún no hay entregas detectadas. Sube un archivo para empezar.</p>
+        </div>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>
