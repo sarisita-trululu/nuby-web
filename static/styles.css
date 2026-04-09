@@ -84,10 +84,25 @@ h1 {
   background: linear-gradient(180deg, rgba(255, 245, 231, 0.95), rgba(240, 223, 200, 0.92));
 }
 
-.hero-card ul {
-  padding-left: 18px;
+.hero-card h2 {
+  margin-top: 0;
+  line-height: 1.15;
+}
+
+.hero-message,
+.hero-signoff {
   color: var(--muted);
   line-height: 1.8;
+  font-size: 1.08rem;
+}
+
+.hero-message {
+  margin-top: 18px;
+}
+
+.hero-signoff {
+  margin-top: 22px;
+  font-style: italic;
 }
 
 .panel {
