@@ -52,7 +52,7 @@ class GoogleCalendarService:
             else:
                 if not self.credentials_path.exists():
                     raise FileNotFoundError(
-                        "No se encontró credentials.json en la raíz del proyecto."
+                        "No se encontro credentials.json en la raiz del proyecto."
                     )
                 flow = InstalledAppFlow.from_client_secrets_file(
                     str(self.credentials_path),
@@ -82,8 +82,12 @@ class GoogleCalendarService:
     def _create_due_event(self, service, item: DeliveryItem) -> dict:
         due_date = datetime.fromisoformat(item.due_date_iso).date()
         event = {
-            "summary": f"Entrega: {item.title}",
-            "description": f"Tarea detectada automáticamente.\n\nTexto original: {item.source_line}",
+            "summary": f"{item.subject} - {item.title}",
+            "description": (
+                f"Materia: {item.subject}\n"
+                f"Tarea detectada automaticamente.\n\n"
+                f"Texto original: {item.source_line}"
+            ),
             "start": {"date": due_date.isoformat()},
             "end": {"date": (due_date + timedelta(days=1)).isoformat()},
             "reminders": {
@@ -93,26 +97,19 @@ class GoogleCalendarService:
                 ],
             },
         }
-        return (
-            service.events()
-            .insert(calendarId=self.calendar_id, body=event)
-            .execute()
-        )
+        return service.events().insert(calendarId=self.calendar_id, body=event).execute()
 
     def _create_prep_event(self, service, item: DeliveryItem) -> dict:
         prep_dt = datetime.combine(datetime.fromisoformat(item.reminder_date_iso).date(), time(9, 0))
         event = {
-            "summary": f"Preparar entrega: {item.title}",
+            "summary": f"Preparar {item.subject} - {item.title}",
             "description": (
-                f"Recordatorio automático {item.reminder_days} días antes de la entrega.\n"
+                f"Materia: {item.subject}\n"
+                f"Recordatorio automatico {item.reminder_days} dias antes de la entrega.\n"
                 f"Entrega final: {item.due_date_iso}"
             ),
             "start": {"dateTime": prep_dt.isoformat(), "timeZone": "America/Bogota"},
             "end": {"dateTime": prep_dt.replace(hour=10).isoformat(), "timeZone": "America/Bogota"},
             "reminders": {"useDefault": True},
         }
-        return (
-            service.events()
-            .insert(calendarId=self.calendar_id, body=event)
-            .execute()
-        )
+        return service.events().insert(calendarId=self.calendar_id, body=event).execute()

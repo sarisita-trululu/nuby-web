@@ -48,7 +48,12 @@ async def analyze_document(
         content = await file.read()
         text = extract_text(file.filename, content)
         reminder_days = max(0, reminder_days)
-        deliveries = parse_deliveries(text, today=date.today(), reminder_days=reminder_days)
+        deliveries = parse_deliveries(
+            text,
+            today=date.today(),
+            reminder_days=reminder_days,
+            source_name=file.filename or "",
+        )
         raw_payload = json.dumps([item.to_dict() for item in deliveries], ensure_ascii=False)
         success = f"Se detectaron {len(deliveries)} entregas." if deliveries else "No se detectaron entregas."
         return templates.TemplateResponse(
@@ -80,6 +85,7 @@ async def analyze_document(
 @app.post("/sync", response_class=HTMLResponse)
 async def sync_calendar(
     request: Request,
+    subjects: Annotated[list[str], Form(...)],
     titles: Annotated[list[str], Form(...)],
     due_dates: Annotated[list[str], Form(...)],
     source_lines: Annotated[list[str], Form(...)],
@@ -87,6 +93,7 @@ async def sync_calendar(
 ):
     try:
         deliveries = _build_deliveries_from_form(
+            subjects=subjects,
             titles=titles,
             due_dates=due_dates,
             source_lines=source_lines,
@@ -128,13 +135,15 @@ def _apply_reminder_days(item: DeliveryItem, reminder_days: int) -> DeliveryItem
 
 
 def _build_deliveries_from_form(
+    subjects: list[str],
     titles: list[str],
     due_dates: list[str],
     source_lines: list[str],
     reminder_days_list: list[int],
 ) -> list[DeliveryItem]:
     if not (
-        len(titles)
+        len(subjects)
+        == len(titles)
         == len(due_dates)
         == len(source_lines)
         == len(reminder_days_list)
@@ -142,13 +151,15 @@ def _build_deliveries_from_form(
         raise ValueError("Los datos del formulario no coinciden entre actividades.")
 
     deliveries: list[DeliveryItem] = []
-    for title, due_date, source_line, reminder_days in zip(
+    for subject, title, due_date, source_line, reminder_days in zip(
+        subjects,
         titles,
         due_dates,
         source_lines,
         reminder_days_list,
     ):
         item = DeliveryItem(
+            subject=subject,
             title=title,
             due_date_iso=due_date,
             reminder_date_iso=due_date,

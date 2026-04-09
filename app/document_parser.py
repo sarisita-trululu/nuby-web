@@ -73,10 +73,12 @@ def parse_deliveries(
     text: str,
     today: date | None = None,
     reminder_days: int = 5,
+    source_name: str = "",
 ) -> list[DeliveryItem]:
     if today is None:
         today = date.today()
     reminder_days = max(0, reminder_days)
+    subject = _extract_subject(text, source_name)
 
     deliveries: list[DeliveryItem] = []
     seen: set[tuple[str, str]] = set()
@@ -102,6 +104,7 @@ def parse_deliveries(
         seen.add(key)
         deliveries.append(
             DeliveryItem(
+                subject=subject,
                 title=title,
                 due_date_iso=due_date.isoformat(),
                 reminder_date_iso=reminder_date.isoformat(),
@@ -176,3 +179,60 @@ def _extract_title(line: str, matched_date_text: str) -> str:
     )
     title = re.sub(r"\s+", " ", title).strip(" :.-")
     return title[:120]
+
+
+def _extract_subject(text: str, source_name: str) -> str:
+    lines = _normalize_lines(text)
+    header_candidates = lines[:20]
+
+    patterns = [
+        r"\b(?:materia|asignatura|curso|catedra|cátedra|modulo|módulo)\s*:\s*(.+)",
+        r"\b(?:plan de curso|programa de curso|syllabus)\s+de\s+(.+)",
+    ]
+
+    for line in header_candidates:
+        for pattern in patterns:
+            match = re.search(pattern, line, flags=re.IGNORECASE)
+            if match:
+                subject = _clean_subject(match.group(1))
+                if subject:
+                    return subject
+
+    for line in header_candidates:
+        if 2 <= len(line.split()) <= 8 and not _extract_date(line, date.today()):
+            if any(
+                word in line.lower()
+                for word in (
+                    "psicologia",
+                    "psicología",
+                    "clinica",
+                    "clínica",
+                    "pediatria",
+                    "pediatría",
+                    "bioetica",
+                    "bioética",
+                    "farmacologia",
+                    "farmacología",
+                    "patologia",
+                    "patología",
+                    "salud",
+                )
+            ):
+                subject = _clean_subject(line)
+                if subject:
+                    return subject
+
+    stem = Path(source_name).stem if source_name else ""
+    cleaned_name = _clean_subject(stem.replace("_", " ").replace("-", " "))
+    return cleaned_name or "Materia no identificada"
+
+
+def _clean_subject(value: str) -> str:
+    cleaned = re.sub(r"\s+", " ", value).strip(" :.-_")
+    cleaned = re.sub(
+        r"\b(grupo|semestre|periodo|período)\b.*$",
+        "",
+        cleaned,
+        flags=re.IGNORECASE,
+    ).strip(" :.-_")
+    return cleaned[:120]

@@ -61,10 +61,12 @@
           <div class="cards">
             {% for delivery in deliveries %}
               <article class="card">
+                <input type="hidden" name="subjects" value="{{ delivery.subject }}">
                 <input type="hidden" name="titles" value="{{ delivery.title }}">
                 <input type="hidden" name="due_dates" value="{{ delivery.due_date_iso }}">
                 <input type="hidden" name="source_lines" value="{{ delivery.source_line }}">
                 <div class="card-date">{{ delivery.due_date_iso }}</div>
+                <p class="subject-badge">{{ delivery.subject }}</p>
                 <h3>{{ delivery.title }}</h3>
                 <label class="card-label" for="days-{{ loop.index }}">Días de aviso para esta actividad</label>
                 <input

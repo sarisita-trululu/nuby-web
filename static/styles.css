@@ -204,6 +204,16 @@ button:hover {
   font-weight: 700;
 }
 
+.subject-badge {
+  display: inline-block;
+  margin: 0 0 10px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(36, 79, 143, 0.12);
+  color: #153562;
+  font-weight: 700;
+}
+
 .card h3 {
   margin: 0 0 12px;
   font-size: 1.2rem;
