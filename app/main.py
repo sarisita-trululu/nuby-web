@@ -9,7 +9,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from .document_parser import analyze_document
+from .document_parser import analyze_document as analyze_uploaded_document
 from .google_calendar import GoogleCalendarService
 from .models import DeliveryItem
 
@@ -47,7 +47,7 @@ async def analyze_document(
     try:
         content = await file.read()
         reminder_days = max(0, reminder_days)
-        deliveries = analyze_document(
+        deliveries = analyze_uploaded_document(
             file.filename,
             content,
             today=date.today(),

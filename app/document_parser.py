@@ -402,30 +402,30 @@ def _normalize_lines(text: str) -> list[str]:
 
 def _extract_date(line: str, today: date, base_year: int | None = None) -> dict | None:
     for pattern in DATE_PATTERNS:
-        match = re.search(pattern, line, flags=re.IGNORECASE)
-        if not match:
-            continue
+        for match in re.finditer(pattern, line, flags=re.IGNORECASE):
+            matched_text = match.group(0).replace(".", "").strip()
+            if "semana" in matched_text.lower():
+                continue
 
-        matched_text = match.group(0).replace(".", "").strip()
-        parsed = dateparser.parse(
-            matched_text,
-            languages=["es", "en"],
-            settings={
-                "PREFER_DATES_FROM": "future",
-                "RELATIVE_BASE": datetime.combine(today, datetime.min.time()),
-            },
-        )
-        if not parsed:
-            continue
+            parsed = dateparser.parse(
+                matched_text,
+                languages=["es", "en"],
+                settings={
+                    "PREFER_DATES_FROM": "future",
+                    "RELATIVE_BASE": datetime.combine(today, datetime.min.time()),
+                },
+            )
+            if not parsed:
+                continue
 
-        parsed_date = parsed.date()
-        explicit_year = re.search(r"\b\d{4}\b", matched_text)
-        if base_year and not explicit_year:
-            parsed_date = parsed_date.replace(year=base_year)
-        elif parsed_date.year < today.year:
-            parsed_date = parsed_date.replace(year=today.year)
+            parsed_date = parsed.date()
+            explicit_year = re.search(r"\b\d{4}\b", matched_text)
+            if base_year and not explicit_year:
+                parsed_date = parsed_date.replace(year=base_year)
+            elif parsed_date.year < today.year:
+                parsed_date = parsed_date.replace(year=today.year)
 
-        return {"date": parsed_date, "matched_text": matched_text}
+            return {"date": parsed_date, "matched_text": matched_text}
     return None
 
 
