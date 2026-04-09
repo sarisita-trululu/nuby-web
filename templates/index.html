@@ -34,7 +34,7 @@
           name="reminder_days"
           type="number"
           min="0"
-          value="{{ reminder_days }}"
+          value="{{ default_reminder_days }}"
           class="days-input"
           required
         >
@@ -57,27 +57,30 @@
       </div>
 
       {% if deliveries %}
-        <div class="cards">
-          {% for delivery in deliveries %}
-            <article class="card">
-              <div class="card-date">{{ delivery.due_date_iso }}</div>
-              <h3>{{ delivery.title }}</h3>
-              <p><strong>Recordatorio:</strong> {{ delivery.reminder_date_iso }} ({{ reminder_days }} días antes)</p>
-              <p class="source">{{ delivery.source_line }}</p>
-            </article>
-          {% endfor %}
-        </div>
-
         <form action="/sync" method="post" class="sync-form">
-          <textarea name="payload" hidden>{{ raw_payload }}</textarea>
-          <input
-            name="reminder_days"
-            type="number"
-            min="0"
-            value="{{ reminder_days }}"
-            class="days-input"
-            required
-          >
+          <div class="cards">
+            {% for delivery in deliveries %}
+              <article class="card">
+                <input type="hidden" name="titles" value="{{ delivery.title }}">
+                <input type="hidden" name="due_dates" value="{{ delivery.due_date_iso }}">
+                <input type="hidden" name="source_lines" value="{{ delivery.source_line }}">
+                <div class="card-date">{{ delivery.due_date_iso }}</div>
+                <h3>{{ delivery.title }}</h3>
+                <label class="card-label" for="days-{{ loop.index }}">Días de aviso para esta actividad</label>
+                <input
+                  id="days-{{ loop.index }}"
+                  name="reminder_days_list"
+                  type="number"
+                  min="0"
+                  value="{{ delivery.reminder_days }}"
+                  class="days-input"
+                  required
+                >
+                <p><strong>Recordatorio sugerido:</strong> {{ delivery.reminder_date_iso }}</p>
+                <p class="source">{{ delivery.source_line }}</p>
+              </article>
+            {% endfor %}
+          </div>
           <button type="submit" class="sync-button">Sincronizar con Google Calendar</button>
         </form>
       {% else %}

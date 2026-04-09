@@ -209,6 +209,12 @@ button:hover {
   font-size: 1.2rem;
 }
 
+.card-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
 .sync-form {
   margin-top: 24px;
 }

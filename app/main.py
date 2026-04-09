@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from datetime import date, datetime, timedelta
+from typing import Annotated
 
 from fastapi import FastAPI, File, Form, Request, UploadFile
 from fastapi.responses import HTMLResponse
@@ -27,7 +28,7 @@ async def index(request: Request):
             "error": None,
             "success": None,
             "raw_payload": "[]",
-            "reminder_days": 5,
+            "default_reminder_days": 5,
         },
     )
 
@@ -58,7 +59,7 @@ async def analyze_document(
                 "error": None,
                 "success": success,
                 "raw_payload": raw_payload,
-                "reminder_days": reminder_days,
+                "default_reminder_days": reminder_days,
             },
         )
     except Exception as exc:
@@ -70,7 +71,7 @@ async def analyze_document(
                 "error": str(exc),
                 "success": None,
                 "raw_payload": "[]",
-                "reminder_days": reminder_days,
+                "default_reminder_days": reminder_days,
             },
             status_code=400,
         )
@@ -79,13 +80,18 @@ async def analyze_document(
 @app.post("/sync", response_class=HTMLResponse)
 async def sync_calendar(
     request: Request,
-    payload: str = Form(...),
-    reminder_days: int = Form(5),
+    titles: Annotated[list[str], Form(...)],
+    due_dates: Annotated[list[str], Form(...)],
+    source_lines: Annotated[list[str], Form(...)],
+    reminder_days_list: Annotated[list[int], Form(...)],
 ):
     try:
-        raw_items = json.loads(payload)
-        reminder_days = max(0, reminder_days)
-        deliveries = [_apply_reminder_days(DeliveryItem(**item), reminder_days) for item in raw_items]
+        deliveries = _build_deliveries_from_form(
+            titles=titles,
+            due_dates=due_dates,
+            source_lines=source_lines,
+            reminder_days_list=reminder_days_list,
+        )
         service = GoogleCalendarService()
         created_events = service.create_delivery_events(deliveries)
         return templates.TemplateResponse(
@@ -95,8 +101,8 @@ async def sync_calendar(
                 "deliveries": deliveries,
                 "error": None,
                 "success": f"Se crearon {len(created_events)} eventos en Google Calendar.",
-                "raw_payload": payload,
-                "reminder_days": reminder_days,
+                "raw_payload": json.dumps([item.to_dict() for item in deliveries], ensure_ascii=False),
+                "default_reminder_days": 5,
             },
         )
     except Exception as exc:
@@ -107,8 +113,8 @@ async def sync_calendar(
                 "deliveries": [],
                 "error": str(exc),
                 "success": None,
-                "raw_payload": payload,
-                "reminder_days": reminder_days,
+                "raw_payload": "[]",
+                "default_reminder_days": 5,
             },
             status_code=400,
         )
@@ -119,3 +125,36 @@ def _apply_reminder_days(item: DeliveryItem, reminder_days: int) -> DeliveryItem
     item.reminder_days = reminder_days
     item.reminder_date_iso = (due_date - timedelta(days=reminder_days)).isoformat()
     return item
+
+
+def _build_deliveries_from_form(
+    titles: list[str],
+    due_dates: list[str],
+    source_lines: list[str],
+    reminder_days_list: list[int],
+) -> list[DeliveryItem]:
+    if not (
+        len(titles)
+        == len(due_dates)
+        == len(source_lines)
+        == len(reminder_days_list)
+    ):
+        raise ValueError("Los datos del formulario no coinciden entre actividades.")
+
+    deliveries: list[DeliveryItem] = []
+    for title, due_date, source_line, reminder_days in zip(
+        titles,
+        due_dates,
+        source_lines,
+        reminder_days_list,
+    ):
+        item = DeliveryItem(
+            title=title,
+            due_date_iso=due_date,
+            reminder_date_iso=due_date,
+            source_line=source_line,
+            reminder_days=max(0, reminder_days),
+        )
+        deliveries.append(_apply_reminder_days(item, item.reminder_days))
+
+    return deliveries
