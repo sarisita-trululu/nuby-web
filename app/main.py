@@ -9,7 +9,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from .document_parser import extract_text, parse_deliveries
+from .document_parser import analyze_document
 from .google_calendar import GoogleCalendarService
 from .models import DeliveryItem
 
@@ -46,13 +46,12 @@ async def analyze_document(
 ):
     try:
         content = await file.read()
-        text = extract_text(file.filename, content)
         reminder_days = max(0, reminder_days)
-        deliveries = parse_deliveries(
-            text,
+        deliveries = analyze_document(
+            file.filename,
+            content,
             today=date.today(),
             reminder_days=reminder_days,
-            source_name=file.filename or "",
         )
         raw_payload = json.dumps([item.to_dict() for item in deliveries], ensure_ascii=False)
         success = f"Se detectaron {len(deliveries)} entregas." if deliveries else "No se detectaron entregas."
@@ -86,6 +85,7 @@ async def analyze_document(
 async def sync_calendar(
     request: Request,
     subjects: Annotated[list[str], Form(...)],
+    categories: Annotated[list[str], Form(...)],
     titles: Annotated[list[str], Form(...)],
     due_dates: Annotated[list[str], Form(...)],
     source_lines: Annotated[list[str], Form(...)],
@@ -94,6 +94,7 @@ async def sync_calendar(
     try:
         deliveries = _build_deliveries_from_form(
             subjects=subjects,
+            categories=categories,
             titles=titles,
             due_dates=due_dates,
             source_lines=source_lines,
@@ -136,6 +137,7 @@ def _apply_reminder_days(item: DeliveryItem, reminder_days: int) -> DeliveryItem
 
 def _build_deliveries_from_form(
     subjects: list[str],
+    categories: list[str],
     titles: list[str],
     due_dates: list[str],
     source_lines: list[str],
@@ -143,6 +145,7 @@ def _build_deliveries_from_form(
 ) -> list[DeliveryItem]:
     if not (
         len(subjects)
+        == len(categories)
         == len(titles)
         == len(due_dates)
         == len(source_lines)
@@ -151,8 +154,9 @@ def _build_deliveries_from_form(
         raise ValueError("Los datos del formulario no coinciden entre actividades.")
 
     deliveries: list[DeliveryItem] = []
-    for subject, title, due_date, source_line, reminder_days in zip(
+    for subject, category, title, due_date, source_line, reminder_days in zip(
         subjects,
+        categories,
         titles,
         due_dates,
         source_lines,
@@ -160,6 +164,7 @@ def _build_deliveries_from_form(
     ):
         item = DeliveryItem(
             subject=subject,
+            category=category,
             title=title,
             due_date_iso=due_date,
             reminder_date_iso=due_date,

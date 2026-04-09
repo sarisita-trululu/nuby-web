@@ -6,6 +6,7 @@ from dataclasses import dataclass, asdict
 @dataclass
 class DeliveryItem:
     subject: str
+    category: str
     title: str
     due_date_iso: str
     reminder_date_iso: str

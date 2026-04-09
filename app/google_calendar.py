@@ -82,9 +82,10 @@ class GoogleCalendarService:
     def _create_due_event(self, service, item: DeliveryItem) -> dict:
         due_date = datetime.fromisoformat(item.due_date_iso).date()
         event = {
-            "summary": f"{item.subject} - {item.title}",
+            "summary": f"{item.subject} - {item.category.title()} - {item.title}",
             "description": (
                 f"Materia: {item.subject}\n"
+                f"Categoria: {item.category}\n"
                 f"Tarea detectada automaticamente.\n\n"
                 f"Texto original: {item.source_line}"
             ),
@@ -102,9 +103,10 @@ class GoogleCalendarService:
     def _create_prep_event(self, service, item: DeliveryItem) -> dict:
         prep_dt = datetime.combine(datetime.fromisoformat(item.reminder_date_iso).date(), time(9, 0))
         event = {
-            "summary": f"Preparar {item.subject} - {item.title}",
+            "summary": f"Preparar {item.subject} - {item.category.title()} - {item.title}",
             "description": (
                 f"Materia: {item.subject}\n"
+                f"Categoria: {item.category}\n"
                 f"Recordatorio automatico {item.reminder_days} dias antes de la entrega.\n"
                 f"Entrega final: {item.due_date_iso}"
             ),
