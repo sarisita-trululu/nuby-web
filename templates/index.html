@@ -7,44 +7,76 @@
   <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-  <div class="brain-background" aria-hidden="true">
-    <span class="brain-symbol">Ψ</span>
-    <span class="brain-symbol">Ψ</span>
-    <span class="brain-symbol">Ψ</span>
-    <span class="brain-symbol">Ψ</span>
-    <span class="brain-symbol">Ψ</span>
-    <span class="brain-symbol">Ψ</span>
+  <div class="psyche-background" aria-hidden="true">
+    <div class="aurora aurora-one parallax-item" data-depth="0.05"></div>
+    <div class="aurora aurora-two parallax-item" data-depth="0.08"></div>
+    <div class="aurora aurora-three parallax-item" data-depth="0.03"></div>
+
+    <span class="floating-glyph glyph-psi parallax-item" data-depth="0.09">&#936;</span>
+    <span class="floating-glyph glyph-psi small parallax-item" data-depth="0.05">&#936;</span>
+
+    <svg class="floating-illustration motif-brain parallax-item" data-depth="0.1" viewBox="0 0 140 140" fill="none">
+      <path d="M53 26c-14 0-24 10-24 23 0 3 1 6 2 9-10 4-16 13-16 24 0 14 11 25 25 25h7c3 10 12 17 23 17 10 0 19-6 23-15 3 1 6 2 10 2 15 0 27-12 27-27 0-9-4-17-11-22 2-3 3-7 3-11 0-13-11-24-24-24-5 0-9 1-13 4-4-8-13-13-23-13-9 0-18 4-23 8-2 0-4 0-6 0Z" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M53 34c-5 7-6 15-2 24m18-27c-2 8 0 16 6 23m-29 17c10 2 16 10 18 20m16-50c8 2 14 8 17 17m-4 30c-8 0-15 5-18 13" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/>
+    </svg>
+
+    <svg class="floating-illustration motif-book parallax-item" data-depth="0.06" viewBox="0 0 120 120" fill="none">
+      <path d="M26 28c0-7 5-12 12-12h46c7 0 12 5 12 12v58c0 7-5 12-12 12H38c-7 0-12 5-12 12V28Z" stroke="currentColor" stroke-width="4.5" stroke-linejoin="round"/>
+      <path d="M36 30h48M36 48h35M36 66h41M36 84h28" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/>
+    </svg>
+
+    <svg class="floating-illustration motif-profile parallax-item" data-depth="0.07" viewBox="0 0 140 140" fill="none">
+      <path d="M88 21c-7 0-13 5-15 11-5 2-9 7-9 13 0 4 1 8 4 11-5 3-8 8-8 14 0 8 6 15 14 16-4 18-18 30-38 35M89 22c11 8 18 22 18 38 0 19-10 36-25 45" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M65 54c6 2 12 1 18-2m-14 18c4 2 9 2 14 0" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+    </svg>
+
+    <svg class="floating-illustration motif-mind parallax-item" data-depth="0.04" viewBox="0 0 160 160" fill="none">
+      <path d="M80 19c-29 0-53 24-53 53 0 20 11 37 27 46v19l18-11c3 1 5 1 8 1 29 0 53-24 53-55 0-29-24-53-53-53Z" stroke="currentColor" stroke-width="4.5" stroke-linejoin="round"/>
+      <circle cx="62" cy="78" r="5" fill="currentColor"/>
+      <circle cx="82" cy="61" r="5" fill="currentColor"/>
+      <circle cx="100" cy="83" r="5" fill="currentColor"/>
+      <path d="M62 78 82 61l18 22m-38 0 19 15 19-15" stroke="currentColor" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
   </div>
   <div class="cursor-glow" id="cursor-glow"></div>
 
   <main class="page">
     <form action="/logout" method="post" class="logout-form">
-      <span class="user-chip">Usuario: {{ current_user }}</span>
-      <button type="submit" class="secondary-button">Cerrar sesion</button>
+      <span class="user-chip">
+        {% if is_guest %}
+          Modo abierto: {{ user_label }}
+        {% else %}
+          Usuario: {{ user_label }}
+        {% endif %}
+      </span>
+      <button type="submit" class="secondary-button">
+        {% if is_guest %}Reiniciar espacio{% else %}Cerrar sesion{% endif %}
+      </button>
     </form>
+
     <section class="hero">
       <div class="hero-copy">
         <p class="eyebrow">PDF + Word + Calendario Propio</p>
-        <h1>Convierte tu semestre en un calendario academico vivo.</h1>
+        <h1>Convierte tu semestre en un planner academico editable.</h1>
         <p class="lead">
-          Sube un documento, detecta lecturas y actividades, ajusta los dias de aviso y guardalo todo
-          en un calendario propio dentro de la aplicacion.
+          Analiza documentos, detecta lecturas y actividades y luego organizalas en un calendario
+          visual donde cada casilla se puede editar, completar o limpiar.
         </p>
       </div>
       <div class="hero-card">
         <h2>Organiza las tareas del semestre en tu calendario propio</h2>
         <p class="hero-message">Te ayuda a programarte y a organizar tus deberes academicos.</p>
-        <p class="hero-signoff">Espero que te ayude bastante, con cariño sarisita_trululu.</p>
+        <p class="hero-signoff">Espero que te ayude bastante, con carino sarisita_trululu.</p>
       </div>
     </section>
 
     <section class="panel">
-      <div class="message success">Tu calendario ahora vive dentro de esta aplicacion. No depende de Google.</div>
+      <div class="message success">Tu calendario ahora vive dentro de esta aplicacion y cada casilla es editable.</div>
       <div class="google-setup">
         <h2>Como funciona</h2>
         <p class="setup-copy">
-          Analiza un plan de curso o de evaluacion, revisa cada lectura o actividad y agregala a tu
-          calendario academico con recordatorios propios.
+          Analiza un plan de curso o de evaluacion, ajusta los avisos y luego modifica o agrega tareas
+          directamente dentro del planner mensual.
         </p>
         <form action="/calendar/clear" method="post" class="google-actions">
           <button type="submit" class="secondary-button">Limpiar calendario</button>
@@ -76,118 +108,159 @@
       {% endif %}
     </section>
 
-    <section class="results">
-      <div class="results-header">
-        <h2>Items detectados</h2>
-        <p>Revisa y agregalos a tu calendario propio.</p>
-      </div>
-
-      {% if deliveries %}
-        <form action="/sync" method="post" class="sync-form">
-          <div class="cards">
-            {% for delivery in deliveries %}
-              <article class="card">
-                <input type="hidden" name="subjects" value="{{ delivery.subject }}">
-                <input type="hidden" name="categories" value="{{ delivery.category }}">
-                <input type="hidden" name="titles" value="{{ delivery.title }}">
-                <input type="hidden" name="due_dates" value="{{ delivery.due_date_iso }}">
-                <input type="hidden" name="source_lines" value="{{ delivery.source_line }}">
-                <div class="card-date">{{ delivery.due_date_iso }}</div>
-                <p class="subject-badge">{{ delivery.subject }}</p>
-                <p class="category-badge">{{ delivery.category|title }}</p>
-                <h3>{{ delivery.title }}</h3>
-                <label class="card-label" for="days-{{ loop.index }}">Dias de aviso para este item</label>
-                <input
-                  id="days-{{ loop.index }}"
-                  name="reminder_days_list"
-                  type="number"
-                  min="0"
-                  value="{{ delivery.reminder_days }}"
-                  class="days-input"
-                  required
-                >
-                <p><strong>Recordatorio sugerido:</strong> {{ delivery.reminder_date_iso }}</p>
-                <p class="source">{{ delivery.source_line }}</p>
-              </article>
-            {% endfor %}
+    <section class="calendar-panel calendar-experience">
+      <header class="calendar-shell-header">
+        <div class="calendar-heading">
+          <p class="eyebrow">Calendario mensual</p>
+          <div class="calendar-heading-row">
+            <h2>{{ calendar_data.label }}</h2>
+            <span class="calendar-pill">{{ calendar_data.upcoming_events|length }} eventos</span>
           </div>
-          <button type="submit" class="sync-button">Agregar al calendario propio</button>
-        </form>
-      {% else %}
-        <div class="empty-state">
-          <p>Aun no hay items detectados. Sube un archivo para empezar.</p>
+          <p class="calendar-copy">
+            Cada actividad aparece en su fecha exacta. Usa el boton + para agregar tareas y abre
+            cualquier bloque para editarlo sin salir del mes.
+          </p>
         </div>
-      {% endif %}
-    </section>
 
-    <section class="calendar-panel">
-      <div class="calendar-header">
-        <div>
-          <p class="eyebrow">Calendario Academico</p>
-          <h2>{{ calendar_data.label }}</h2>
+        <div class="calendar-toolbar">
+          <div class="calendar-legend">
+            <span class="legend-item"><span class="legend-dot legend-reading"></span>Lectura</span>
+            <span class="legend-item"><span class="legend-dot legend-task"></span>Trabajo / Tarea</span>
+            <span class="legend-item"><span class="legend-dot legend-evaluation"></span>Entrega / Evaluacion</span>
+          </div>
+          <div class="calendar-nav">
+            <a href="/?year={{ calendar_data.prev_year }}&month={{ calendar_data.prev_month }}">Mes anterior</a>
+            <a href="/?year={{ calendar_data.next_year }}&month={{ calendar_data.next_month }}">Mes siguiente</a>
+          </div>
         </div>
-        <div class="calendar-nav">
-          <a href="/?year={{ calendar_data.prev_year }}&month={{ calendar_data.prev_month }}">Mes anterior</a>
-          <a href="/?year={{ calendar_data.next_year }}&month={{ calendar_data.next_month }}">Mes siguiente</a>
-        </div>
-      </div>
+      </header>
 
-      <div class="calendar-grid">
-        <div class="calendar-weekday">Lun</div>
-        <div class="calendar-weekday">Mar</div>
-        <div class="calendar-weekday">Mie</div>
-        <div class="calendar-weekday">Jue</div>
-        <div class="calendar-weekday">Vie</div>
-        <div class="calendar-weekday">Sab</div>
-        <div class="calendar-weekday">Dom</div>
+      <div class="calendar-board-wrapper">
+        <div class="calendar-grid calendar-month-grid">
+          <div class="calendar-weekday">Lunes</div>
+          <div class="calendar-weekday">Martes</div>
+          <div class="calendar-weekday">Miercoles</div>
+          <div class="calendar-weekday">Jueves</div>
+          <div class="calendar-weekday">Viernes</div>
+          <div class="calendar-weekday">Sabado</div>
+          <div class="calendar-weekday">Domingo</div>
 
-        {% for week in calendar_data.weeks %}
-          {% for day in week %}
-            {% if day %}
-              <article class="calendar-day {% if day.is_today %}today{% endif %}">
-                <div class="calendar-day-number">{{ day.day }}</div>
-                <div class="calendar-event-list">
-                  {% for event in day.events[:3] %}
-                    <div class="calendar-event event-{{ event.event_type|lower }}">
-                      <strong>{{ event.subject }}</strong>
-                      <span>{{ event.title }}</span>
+          {% for week in calendar_data.weeks %}
+            {% for day in week %}
+              {% if day %}
+                <article class="calendar-day month-day {% if day.is_today %}today{% endif %}">
+                  <div class="calendar-day-top">
+                    <div class="calendar-day-heading">
+                      <div class="calendar-day-number">{{ day.day }}</div>
+                      {% if day.events %}
+                        <span class="calendar-day-count">{{ day.events|length }}</span>
+                      {% endif %}
                     </div>
-                  {% endfor %}
-                </div>
-              </article>
-            {% else %}
-              <div class="calendar-day empty"></div>
-            {% endif %}
+                    <details class="day-add">
+                      <summary aria-label="Agregar tarea">+</summary>
+                      <form action="/calendar/add" method="post" class="mini-form">
+                        <input type="hidden" name="event_date_iso" value="{{ day.date_iso }}">
+                        <input type="text" name="title" placeholder="Nueva tarea" class="mini-input" required>
+                        <input type="text" name="subject" placeholder="Materia" class="mini-input">
+                        <select name="category" class="mini-input">
+                          <option value="actividad">Actividad</option>
+                          <option value="lectura">Lectura</option>
+                        </select>
+                        <select name="event_type" class="mini-input">
+                          <option value="Entrega">Entrega</option>
+                          <option value="Recordatorio">Recordatorio</option>
+                        </select>
+                        <button type="submit">Guardar</button>
+                      </form>
+                    </details>
+                  </div>
+
+                  <div class="calendar-event-list">
+                    {% for event in day.events %}
+                      <details class="calendar-event category-{{ event.category|lower }}
+                        {% if event.category == 'lectura' %}
+                          event-reading
+                        {% elif event.event_type == 'Recordatorio'
+                            or 'trabajo' in event.title|lower
+                            or 'tarea' in event.title|lower
+                            or 'proyecto' in event.title|lower
+                            or 'seminario' in event.title|lower
+                            or 'preparar:' in event.title|lower %}
+                          event-task
+                        {% else %}
+                          event-evaluation
+                        {% endif %}">
+                        <summary class="calendar-event-summary">
+                          <span class="event-tags">
+                            <span class="event-subject">{{ event.subject }}</span>
+                            <span class="event-category-badge">
+                              {% if event.category == 'lectura' %}Lectura{% else %}Actividad{% endif %}
+                            </span>
+                            <span class="event-type-badge">{{ event.event_type }}</span>
+                          </span>
+                          <span class="event-title">{{ event.title }}</span>
+                        </summary>
+                        <form action="/calendar/update" method="post" class="mini-form">
+                          <input type="hidden" name="event_id" value="{{ event.id }}">
+                          <input type="date" name="event_date_iso" value="{{ event.event_date_iso }}" class="mini-input" required>
+                          <input type="text" name="title" value="{{ event.title }}" class="mini-input" required>
+                          <input type="text" name="subject" value="{{ event.subject }}" class="mini-input" required>
+                          <select name="category" class="mini-input">
+                            <option value="actividad" {% if event.category == 'actividad' %}selected{% endif %}>Actividad</option>
+                            <option value="lectura" {% if event.category == 'lectura' %}selected{% endif %}>Lectura</option>
+                          </select>
+                          <select name="event_type" class="mini-input">
+                            <option value="Entrega" {% if event.event_type == 'Entrega' %}selected{% endif %}>Entrega</option>
+                            <option value="Recordatorio" {% if event.event_type == 'Recordatorio' %}selected{% endif %}>Recordatorio</option>
+                          </select>
+                          <div class="mini-actions">
+                            <button type="submit">Actualizar</button>
+                          </div>
+                        </form>
+                        <form action="/calendar/delete" method="post" class="delete-form">
+                          <input type="hidden" name="event_id" value="{{ event.id }}">
+                          <input type="hidden" name="event_date_iso" value="{{ event.event_date_iso }}">
+                          <button type="submit" class="secondary-button">Borrar</button>
+                        </form>
+                      </details>
+                    {% endfor %}
+                  </div>
+                </article>
+              {% else %}
+                <div class="calendar-day month-day calendar-day-outside" aria-hidden="true"></div>
+              {% endif %}
+            {% endfor %}
           {% endfor %}
-        {% endfor %}
+        </div>
       </div>
 
-      <div class="upcoming-panel">
-        <h3>Proximos eventos</h3>
-        {% if calendar_data.upcoming_events %}
-          <div class="upcoming-list">
-            {% for event in calendar_data.upcoming_events %}
-              <article class="upcoming-item">
-                <div>
-                  <p class="upcoming-date">{{ event.event_date_iso }}</p>
-                  <h4>{{ event.subject }}</h4>
-                  <p>{{ event.event_type }} · {{ event.category|title }}</p>
-                </div>
-                <p class="upcoming-title">{{ event.title }}</p>
-              </article>
-            {% endfor %}
-          </div>
-        {% else %}
-          <p class="setup-copy">Todavia no hay eventos guardados en tu calendario.</p>
-        {% endif %}
-      </div>
     </section>
   </main>
 
   <script>
     const cursorGlow = document.getElementById("cursor-glow");
+    const parallaxItems = document.querySelectorAll(".parallax-item");
+
     window.addEventListener("pointermove", (event) => {
-      cursorGlow.style.transform = `translate(${event.clientX - 90}px, ${event.clientY - 90}px)`;
+      const x = event.clientX;
+      const y = event.clientY;
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+
+      cursorGlow.style.transform = `translate(${x - 120}px, ${y - 120}px)`;
+
+      parallaxItems.forEach((item) => {
+        const depth = Number(item.dataset.depth || 0.05);
+        const offsetX = (x - centerX) * depth;
+        const offsetY = (y - centerY) * depth;
+        item.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0)`;
+      });
+    });
+
+    window.addEventListener("pointerleave", () => {
+      parallaxItems.forEach((item) => {
+        item.style.transform = "translate3d(0, 0, 0)";
+      });
     });
   </script>
 </body>

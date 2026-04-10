@@ -1,6 +1,5 @@
 from __future__ import annotations
-
-import json
+import secrets
 from datetime import date, datetime, timedelta
 from typing import Annotated
 
@@ -19,6 +18,7 @@ app = FastAPI(title="Organizador de Entregas")
 app.add_middleware(SessionMiddleware, secret_key="calendario-academico-seguro")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
+GUEST_PREFIX = "__guest__:"
 
 
 def _current_user(request: Request) -> str | None:
@@ -26,20 +26,47 @@ def _current_user(request: Request) -> str | None:
     return str(user) if user else None
 
 
+def _session_owner(request: Request, create_if_missing: bool = True) -> str | None:
+    current_user = _current_user(request)
+    if current_user:
+        return current_user
+
+    guest_user = request.session.get("guest_user")
+    if guest_user:
+        return str(guest_user)
+
+    if not create_if_missing:
+        return None
+
+    guest_user = f"{GUEST_PREFIX}{secrets.token_hex(8)}"
+    request.session["guest_user"] = guest_user
+    return guest_user
+
+
+def _display_user_label(request: Request) -> str:
+    current_user = _current_user(request)
+    if current_user:
+        return current_user
+    return "Invitado"
+
+
 def _base_context(request: Request, year: int | None = None, month: int | None = None) -> dict:
     today = date.today()
     year = year or today.year
     month = month or today.month
     current_user = _current_user(request)
-    calendar_data = LocalCalendarService().get_month_view(current_user or "__guest__", year, month)
+    session_owner = _session_owner(request)
+    calendar_data = LocalCalendarService().get_month_view(session_owner or "__guest__", year, month)
     return {
         "request": request,
         "current_user": current_user,
+        "user_label": _display_user_label(request),
         "is_authenticated": bool(current_user),
-        "deliveries": [],
+        "is_guest": not bool(current_user),
         "error": None,
         "success": None,
-        "raw_payload": "[]",
+        "analysis_count": 0,
+        "analysis_month_label": None,
         "default_reminder_days": 5,
         "calendar_data": calendar_data,
     }
@@ -47,15 +74,7 @@ def _base_context(request: Request, year: int | None = None, month: int | None =
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request, year: int | None = None, month: int | None = None):
-    if not _current_user(request):
-        return templates.TemplateResponse(
-            "login.html",
-            {
-                "request": request,
-                "error": None,
-                "success": None,
-            },
-        )
+    _session_owner(request)
     return templates.TemplateResponse("index.html", _base_context(request, year=year, month=month))
 
 
@@ -70,12 +89,7 @@ async def analyze_document(
     file: UploadFile = File(...),
     reminder_days: int = Form(5),
 ):
-    if not _current_user(request):
-        return templates.TemplateResponse(
-            "login.html",
-            {"request": request, "error": "Debes iniciar sesion para usar la aplicacion.", "success": None},
-            status_code=401,
-        )
+    current_owner = _session_owner(request)
     try:
         content = await file.read()
         reminder_days = max(0, reminder_days)
@@ -85,15 +99,30 @@ async def analyze_document(
             today=date.today(),
             reminder_days=reminder_days,
         )
-        raw_payload = json.dumps([item.to_dict() for item in deliveries], ensure_ascii=False)
-        success = f"Se detectaron {len(deliveries)} items para organizar." if deliveries else "No se detectaron items."
+        if not deliveries:
+            return templates.TemplateResponse(
+                "index.html",
+                {
+                    **_base_context(request),
+                    "success": "No se detectaron items con fecha clara para ubicar en el calendario.",
+                    "default_reminder_days": reminder_days,
+                },
+            )
+
+        created_events = LocalCalendarService().add_delivery_items(current_owner, deliveries)
+        focus_year, focus_month = _calendar_focus_from_deliveries(deliveries)
+        success = (
+            f"Se detectaron {len(deliveries)} items y se ubicaron en {month_name_es(focus_month)} {focus_year}."
+            if created_events
+            else f"Se detectaron {len(deliveries)} items, pero ya estaban ubicados en tu calendario."
+        )
         return templates.TemplateResponse(
             "index.html",
             {
-                **_base_context(request),
-                "deliveries": deliveries,
+                **_base_context(request, year=focus_year, month=focus_month),
                 "success": success,
-                "raw_payload": raw_payload,
+                "analysis_count": len(deliveries),
+                "analysis_month_label": f"{month_name_es(focus_month)} {focus_year}",
                 "default_reminder_days": reminder_days,
             },
         )
@@ -119,13 +148,7 @@ async def sync_calendar(
     source_lines: Annotated[list[str], Form(...)],
     reminder_days_list: Annotated[list[int], Form(...)],
 ):
-    current_user = _current_user(request)
-    if not current_user:
-        return templates.TemplateResponse(
-            "login.html",
-            {"request": request, "error": "Debes iniciar sesion para guardar eventos.", "success": None},
-            status_code=401,
-        )
+    current_user = _session_owner(request)
     try:
         deliveries = _build_deliveries_from_form(
             subjects=subjects,
@@ -136,13 +159,14 @@ async def sync_calendar(
             reminder_days_list=reminder_days_list,
         )
         created_events = LocalCalendarService().add_delivery_items(current_user, deliveries)
+        focus_year, focus_month = _calendar_focus_from_deliveries(deliveries)
         return templates.TemplateResponse(
             "index.html",
             {
-                **_base_context(request),
-                "deliveries": deliveries,
+                **_base_context(request, year=focus_year, month=focus_month),
                 "success": f"Se agregaron {created_events} eventos a tu calendario propio.",
-                "raw_payload": json.dumps([item.to_dict() for item in deliveries], ensure_ascii=False),
+                "analysis_count": len(deliveries),
+                "analysis_month_label": f"{month_name_es(focus_month)} {focus_year}",
             },
         )
     except Exception as exc:
@@ -158,19 +182,112 @@ async def sync_calendar(
 
 @app.post("/calendar/clear", response_class=HTMLResponse)
 async def clear_local_calendar(request: Request):
-    current_user = _current_user(request)
-    if not current_user:
-        return templates.TemplateResponse(
-            "login.html",
-            {"request": request, "error": "Debes iniciar sesion para limpiar el calendario.", "success": None},
-            status_code=401,
-        )
+    current_user = _session_owner(request)
     LocalCalendarService().clear_all(current_user)
     return templates.TemplateResponse(
         "index.html",
         {
             **_base_context(request),
             "success": "Se limpiaron todos los eventos del calendario propio.",
+        },
+    )
+
+
+@app.post("/calendar/add", response_class=HTMLResponse)
+async def add_manual_calendar_event(
+    request: Request,
+    event_date_iso: str = Form(...),
+    title: str = Form(...),
+    subject: str = Form("General"),
+    category: str = Form("actividad"),
+    event_type: str = Form("Entrega"),
+):
+    current_user = _session_owner(request)
+
+    try:
+        LocalCalendarService().add_manual_event(
+            owner=current_user,
+            event_date_iso=event_date_iso,
+            title=title,
+            subject=subject,
+            category=category,
+            event_type=event_type,
+        )
+        year, month = _year_month_from_iso(event_date_iso)
+        return templates.TemplateResponse(
+            "index.html",
+            {
+                **_base_context(request, year=year, month=month),
+                "success": "Evento agregado al calendario.",
+            },
+        )
+    except Exception as exc:
+        return templates.TemplateResponse(
+            "index.html",
+            {
+                **_base_context(request),
+                "error": str(exc),
+            },
+            status_code=400,
+        )
+
+
+@app.post("/calendar/update", response_class=HTMLResponse)
+async def update_calendar_event(
+    request: Request,
+    event_id: str = Form(...),
+    event_date_iso: str = Form(...),
+    title: str = Form(...),
+    subject: str = Form(...),
+    category: str = Form(...),
+    event_type: str = Form(...),
+):
+    current_user = _session_owner(request)
+
+    try:
+        LocalCalendarService().update_event(
+            owner=current_user,
+            event_id=event_id,
+            event_date_iso=event_date_iso,
+            title=title,
+            subject=subject,
+            category=category,
+            event_type=event_type,
+        )
+        year, month = _year_month_from_iso(event_date_iso)
+        return templates.TemplateResponse(
+            "index.html",
+            {
+                **_base_context(request, year=year, month=month),
+                "success": "Evento actualizado.",
+            },
+        )
+    except Exception as exc:
+        return templates.TemplateResponse(
+            "index.html",
+            {
+                **_base_context(request),
+                "error": str(exc),
+            },
+            status_code=400,
+        )
+
+
+@app.post("/calendar/delete", response_class=HTMLResponse)
+async def delete_calendar_event(
+    request: Request,
+    event_id: str = Form(...),
+    event_date_iso: str = Form(...),
+):
+    current_user = _session_owner(request)
+
+    LocalCalendarService().delete_event(current_user, event_id)
+    year, month = _year_month_from_iso(event_date_iso)
+    return templates.TemplateResponse(
+        "index.html",
+        {
+            **_base_context(request, year=year, month=month),
+            "success": "Evento eliminado.",
         },
     )
 
@@ -233,12 +350,12 @@ async def login(
 @app.post("/logout", response_class=HTMLResponse)
 async def logout(request: Request):
     request.session.clear()
+    _session_owner(request)
     return templates.TemplateResponse(
-        "login.html",
+        "index.html",
         {
-            "request": request,
-            "error": None,
-            "success": "Sesion cerrada.",
+            **_base_context(request),
+            "success": "Se reinicio tu espacio abierto.",
         },
     )
 
@@ -289,3 +406,31 @@ def _build_deliveries_from_form(
         deliveries.append(_apply_reminder_days(item, item.reminder_days))
 
     return deliveries
+
+
+def _year_month_from_iso(date_iso: str) -> tuple[int, int]:
+    parsed = datetime.fromisoformat(date_iso).date()
+    return parsed.year, parsed.month
+
+
+def _calendar_focus_from_deliveries(deliveries: list[DeliveryItem]) -> tuple[int, int]:
+    first_due = min(datetime.fromisoformat(item.due_date_iso).date() for item in deliveries)
+    return first_due.year, first_due.month
+
+
+def month_name_es(month: int) -> str:
+    names = {
+        1: "enero",
+        2: "febrero",
+        3: "marzo",
+        4: "abril",
+        5: "mayo",
+        6: "junio",
+        7: "julio",
+        8: "agosto",
+        9: "septiembre",
+        10: "octubre",
+        11: "noviembre",
+        12: "diciembre",
+    }
+    return names.get(month, "")

@@ -118,6 +118,68 @@ class LocalCalendarService:
             "next_month": next_month,
         }
 
+    def add_manual_event(
+        self,
+        owner: str,
+        event_date_iso: str,
+        title: str,
+        subject: str = "General",
+        category: str = "actividad",
+        event_type: str = "Entrega",
+    ) -> str:
+        normalized_title = title.strip()
+        if not normalized_title:
+            raise ValueError("Debes escribir un titulo para guardar el evento.")
+
+        events = self._load_events()
+        event = CalendarEvent(
+            id=str(uuid.uuid4()),
+            owner=owner,
+            event_date_iso=event_date_iso,
+            title=normalized_title,
+            subject=subject.strip() or "General",
+            category=category.strip() or "actividad",
+            event_type=event_type.strip() or "Entrega",
+            source_line="Creado manualmente",
+        )
+        events.append(event)
+        self._save_events(events)
+        return event.id
+
+    def update_event(
+        self,
+        owner: str,
+        event_id: str,
+        event_date_iso: str,
+        title: str,
+        subject: str,
+        category: str,
+        event_type: str,
+    ) -> None:
+        events = self._load_events()
+        normalized_title = title.strip()
+        if not normalized_title:
+            raise ValueError("Debes escribir un titulo para actualizar el evento.")
+
+        for event in events:
+            if event.id == event_id and event.owner == owner:
+                event.event_date_iso = event_date_iso
+                event.title = normalized_title
+                event.subject = subject.strip() or "General"
+                event.category = category.strip() or "actividad"
+                event.event_type = event_type.strip() or "Entrega"
+                self._save_events(events)
+                return
+
+        raise ValueError("No se encontro el evento que intentas actualizar.")
+
+    def delete_event(self, owner: str, event_id: str) -> None:
+        events = self._load_events()
+        filtered = [event for event in events if not (event.id == event_id and event.owner == owner)]
+        if len(filtered) == len(events):
+            raise ValueError("No se encontro el evento que intentas borrar.")
+        self._save_events(filtered)
+
     def clear_all(self, owner: str) -> None:
         events = [event for event in self._load_events() if event.owner != owner]
         self._save_events(events)
