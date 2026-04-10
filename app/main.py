@@ -10,7 +10,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from .document_parser import analyze_document as analyze_uploaded_document
-from .google_calendar import GoogleCalendarService
+from .local_calendar import LocalCalendarService
 from .models import DeliveryItem
 
 app = FastAPI(title="Organizador de Entregas")
@@ -18,8 +18,11 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 
-def _base_context(request: Request) -> dict:
-    google_status = GoogleCalendarService().get_status()
+def _base_context(request: Request, year: int | None = None, month: int | None = None) -> dict:
+    today = date.today()
+    year = year or today.year
+    month = month or today.month
+    calendar_data = LocalCalendarService().get_month_view(year, month)
     return {
         "request": request,
         "deliveries": [],
@@ -27,17 +30,13 @@ def _base_context(request: Request) -> dict:
         "success": None,
         "raw_payload": "[]",
         "default_reminder_days": 5,
-        "can_sync_calendar": google_status["can_sync"],
-        "calendar_status": google_status["message"],
-        "google_mode": google_status["mode"],
-        "google_needs_oauth": google_status["needs_oauth"],
-        "google_calendar_id": google_status["calendar_id"],
+        "calendar_data": calendar_data,
     }
 
 
 @app.get("/", response_class=HTMLResponse)
-async def index(request: Request):
-    return templates.TemplateResponse("index.html", _base_context(request))
+async def index(request: Request, year: int | None = None, month: int | None = None):
+    return templates.TemplateResponse("index.html", _base_context(request, year=year, month=month))
 
 
 @app.get("/health")
@@ -61,13 +60,12 @@ async def analyze_document(
             reminder_days=reminder_days,
         )
         raw_payload = json.dumps([item.to_dict() for item in deliveries], ensure_ascii=False)
-        success = f"Se detectaron {len(deliveries)} entregas." if deliveries else "No se detectaron entregas."
+        success = f"Se detectaron {len(deliveries)} items para organizar." if deliveries else "No se detectaron items."
         return templates.TemplateResponse(
             "index.html",
             {
                 **_base_context(request),
                 "deliveries": deliveries,
-                "error": None,
                 "success": success,
                 "raw_payload": raw_payload,
                 "default_reminder_days": reminder_days,
@@ -78,10 +76,7 @@ async def analyze_document(
             "index.html",
             {
                 **_base_context(request),
-                "deliveries": [],
                 "error": str(exc),
-                "success": None,
-                "raw_payload": "[]",
                 "default_reminder_days": reminder_days,
             },
             status_code=400,
@@ -99,9 +94,6 @@ async def sync_calendar(
     reminder_days_list: Annotated[list[int], Form(...)],
 ):
     try:
-        google_status = GoogleCalendarService().get_status()
-        if not google_status["can_sync"]:
-            raise RuntimeError(google_status["message"])
         deliveries = _build_deliveries_from_form(
             subjects=subjects,
             categories=categories,
@@ -110,52 +102,14 @@ async def sync_calendar(
             source_lines=source_lines,
             reminder_days_list=reminder_days_list,
         )
-        service = GoogleCalendarService()
-        created_events = service.create_delivery_events(deliveries)
+        created_events = LocalCalendarService().add_delivery_items(deliveries)
         return templates.TemplateResponse(
             "index.html",
             {
                 **_base_context(request),
                 "deliveries": deliveries,
-                "error": None,
-                "success": f"Se crearon {len(created_events)} eventos en Google Calendar.",
+                "success": f"Se agregaron {created_events} eventos a tu calendario propio.",
                 "raw_payload": json.dumps([item.to_dict() for item in deliveries], ensure_ascii=False),
-                "default_reminder_days": 5,
-            },
-        )
-    except Exception as exc:
-        return templates.TemplateResponse(
-            "index.html",
-            {
-                **_base_context(request),
-                "deliveries": [],
-                "error": str(exc),
-                "success": None,
-                "raw_payload": "[]",
-                "default_reminder_days": 5,
-            },
-            status_code=400,
-        )
-
-
-@app.post("/google/upload", response_class=HTMLResponse)
-async def upload_google_credentials(
-    request: Request,
-    google_file: UploadFile = File(...),
-    calendar_id: str = Form("primary"),
-):
-    try:
-        content = await google_file.read()
-        message = GoogleCalendarService().save_credentials_file(
-            filename=google_file.filename or "google.json",
-            content=content,
-            calendar_id=calendar_id,
-        )
-        return templates.TemplateResponse(
-            "index.html",
-            {
-                **_base_context(request),
-                "success": message,
             },
         )
     except Exception as exc:
@@ -169,36 +123,14 @@ async def upload_google_credentials(
         )
 
 
-@app.post("/google/connect", response_class=HTMLResponse)
-async def connect_google_calendar(request: Request):
-    try:
-        message = GoogleCalendarService().connect_oauth()
-        return templates.TemplateResponse(
-            "index.html",
-            {
-                **_base_context(request),
-                "success": message,
-            },
-        )
-    except Exception as exc:
-        return templates.TemplateResponse(
-            "index.html",
-            {
-                **_base_context(request),
-                "error": str(exc),
-            },
-            status_code=400,
-        )
-
-
-@app.post("/google/disconnect", response_class=HTMLResponse)
-async def disconnect_google_calendar(request: Request):
-    message = GoogleCalendarService().disconnect()
+@app.post("/calendar/clear", response_class=HTMLResponse)
+async def clear_local_calendar(request: Request):
+    LocalCalendarService().clear_all()
     return templates.TemplateResponse(
         "index.html",
         {
             **_base_context(request),
-            "success": message,
+            "success": "Se limpiaron todos los eventos del calendario propio.",
         },
     )
 

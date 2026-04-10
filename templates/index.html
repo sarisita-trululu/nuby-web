@@ -3,68 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Organizador de Entregas</title>
+  <title>Calendario Academico</title>
   <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
+  <div class="brain-background" aria-hidden="true">
+    <span class="brain-symbol">Ψ</span>
+    <span class="brain-symbol">Ψ</span>
+    <span class="brain-symbol">Ψ</span>
+    <span class="brain-symbol">Ψ</span>
+    <span class="brain-symbol">Ψ</span>
+    <span class="brain-symbol">Ψ</span>
+  </div>
+  <div class="cursor-glow" id="cursor-glow"></div>
+
   <main class="page">
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow">PDF + Word + Google Calendar</p>
-        <h1>Convierte tus fechas de entrega en recordatorios reales.</h1>
+        <p class="eyebrow">PDF + Word + Calendario Propio</p>
+        <h1>Convierte tu semestre en un calendario academico vivo.</h1>
         <p class="lead">
-          Sube un documento, detecta tareas con fecha y crea automáticamente en Google Calendar
-          la entrega final y un aviso con los días de anticipación que tú elijas.
+          Sube un documento, detecta lecturas y actividades, ajusta los dias de aviso y guardalo todo
+          en un calendario propio dentro de la aplicacion.
         </p>
       </div>
       <div class="hero-card">
-        <h2>Organiza las tareas del semestre en el calendario de google</h2>
-        <p class="hero-message">Te ayuda a programarte y a organizar tus deberes académicos.</p>
+        <h2>Organiza las tareas del semestre en tu calendario propio</h2>
+        <p class="hero-message">Te ayuda a programarte y a organizar tus deberes academicos.</p>
         <p class="hero-signoff">Espero que te ayude bastante, con cariño sarisita_trululu.</p>
       </div>
     </section>
 
     <section class="panel">
-      <div class="message {% if can_sync_calendar %}success{% else %}error{% endif %}">{{ calendar_status }}</div>
+      <div class="message success">Tu calendario ahora vive dentro de esta aplicacion. No depende de Google.</div>
       <div class="google-setup">
-        <h2>Conectar Google Calendar</h2>
+        <h2>Como funciona</h2>
         <p class="setup-copy">
-          Sube tu archivo de Google. Puede ser <strong>credentials.json</strong> para OAuth
-          o un JSON de <strong>Service Account</strong>. Si usas Service Account, comparte tu calendario
-          con el correo de esa cuenta y escribe aquí el ID del calendario.
+          Analiza un plan de curso o de evaluacion, revisa cada lectura o actividad y agregala a tu
+          calendario academico con recordatorios propios.
         </p>
-        <form action="/google/upload" method="post" enctype="multipart/form-data" class="upload-form">
-          <label for="google_file" class="input-label">Archivo de Google Calendar</label>
-          <input id="google_file" name="google_file" type="file" accept=".json" required>
-          <label for="calendar_id" class="input-label">Calendar ID</label>
-          <input
-            id="calendar_id"
-            name="calendar_id"
-            type="text"
-            value="{{ google_calendar_id }}"
-            class="calendar-input"
-            placeholder="primary o correo-del-calendario@group.calendar.google.com"
-          >
-          <button type="submit">Guardar configuración de Google</button>
+        <form action="/calendar/clear" method="post" class="google-actions">
+          <button type="submit" class="secondary-button">Limpiar calendario</button>
         </form>
-
-        <div class="google-actions">
-          {% if google_needs_oauth %}
-            <form action="/google/connect" method="post">
-              <button type="submit" class="sync-button">Autorizar cuenta de Google</button>
-            </form>
-          {% endif %}
-          {% if google_mode %}
-            <form action="/google/disconnect" method="post">
-              <button type="submit" class="secondary-button">Desconectar Google</button>
-            </form>
-          {% endif %}
-        </div>
       </div>
+
       <form action="/analyze" method="post" enctype="multipart/form-data" class="upload-form">
-        <label for="file" class="input-label">Selecciona tu archivo académico</label>
+        <label for="file" class="input-label">Selecciona tu archivo academico</label>
         <input id="file" name="file" type="file" accept=".pdf,.docx" required>
-        <label for="reminder_days" class="input-label">Días de anticipación para el aviso</label>
+        <label for="reminder_days" class="input-label">Dias de anticipacion sugeridos</label>
         <input
           id="reminder_days"
           name="reminder_days"
@@ -88,8 +74,8 @@
 
     <section class="results">
       <div class="results-header">
-        <h2>Entregas detectadas</h2>
-        <p>Revisa antes de sincronizar con Google Calendar.</p>
+        <h2>Items detectados</h2>
+        <p>Revisa y agregalos a tu calendario propio.</p>
       </div>
 
       {% if deliveries %}
@@ -106,7 +92,7 @@
                 <p class="subject-badge">{{ delivery.subject }}</p>
                 <p class="category-badge">{{ delivery.category|title }}</p>
                 <h3>{{ delivery.title }}</h3>
-                <label class="card-label" for="days-{{ loop.index }}">Días de aviso para esta actividad</label>
+                <label class="card-label" for="days-{{ loop.index }}">Dias de aviso para este item</label>
                 <input
                   id="days-{{ loop.index }}"
                   name="reminder_days_list"
@@ -121,14 +107,84 @@
               </article>
             {% endfor %}
           </div>
-          <button type="submit" class="sync-button" {% if not can_sync_calendar %}disabled{% endif %}>Sincronizar con Google Calendar</button>
+          <button type="submit" class="sync-button">Agregar al calendario propio</button>
         </form>
       {% else %}
         <div class="empty-state">
-          <p>Aún no hay entregas detectadas. Sube un archivo para empezar.</p>
+          <p>Aun no hay items detectados. Sube un archivo para empezar.</p>
         </div>
       {% endif %}
     </section>
+
+    <section class="calendar-panel">
+      <div class="calendar-header">
+        <div>
+          <p class="eyebrow">Calendario Academico</p>
+          <h2>{{ calendar_data.label }}</h2>
+        </div>
+        <div class="calendar-nav">
+          <a href="/?year={{ calendar_data.prev_year }}&month={{ calendar_data.prev_month }}">Mes anterior</a>
+          <a href="/?year={{ calendar_data.next_year }}&month={{ calendar_data.next_month }}">Mes siguiente</a>
+        </div>
+      </div>
+
+      <div class="calendar-grid">
+        <div class="calendar-weekday">Lun</div>
+        <div class="calendar-weekday">Mar</div>
+        <div class="calendar-weekday">Mie</div>
+        <div class="calendar-weekday">Jue</div>
+        <div class="calendar-weekday">Vie</div>
+        <div class="calendar-weekday">Sab</div>
+        <div class="calendar-weekday">Dom</div>
+
+        {% for week in calendar_data.weeks %}
+          {% for day in week %}
+            {% if day %}
+              <article class="calendar-day {% if day.is_today %}today{% endif %}">
+                <div class="calendar-day-number">{{ day.day }}</div>
+                <div class="calendar-event-list">
+                  {% for event in day.events[:3] %}
+                    <div class="calendar-event event-{{ event.event_type|lower }}">
+                      <strong>{{ event.subject }}</strong>
+                      <span>{{ event.title }}</span>
+                    </div>
+                  {% endfor %}
+                </div>
+              </article>
+            {% else %}
+              <div class="calendar-day empty"></div>
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+      </div>
+
+      <div class="upcoming-panel">
+        <h3>Proximos eventos</h3>
+        {% if calendar_data.upcoming_events %}
+          <div class="upcoming-list">
+            {% for event in calendar_data.upcoming_events %}
+              <article class="upcoming-item">
+                <div>
+                  <p class="upcoming-date">{{ event.event_date_iso }}</p>
+                  <h4>{{ event.subject }}</h4>
+                  <p>{{ event.event_type }} · {{ event.category|title }}</p>
+                </div>
+                <p class="upcoming-title">{{ event.title }}</p>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="setup-copy">Todavia no hay eventos guardados en tu calendario.</p>
+        {% endif %}
+      </div>
+    </section>
   </main>
+
+  <script>
+    const cursorGlow = document.getElementById("cursor-glow");
+    window.addEventListener("pointermove", (event) => {
+      cursorGlow.style.transform = `translate(${event.clientX - 90}px, ${event.clientY - 90}px)`;
+    });
+  </script>
 </body>
 </html>
