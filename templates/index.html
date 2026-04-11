@@ -7,37 +7,7 @@
   <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-  <div class="psyche-background" aria-hidden="true">
-    <div class="aurora aurora-one parallax-item" data-depth="0.05"></div>
-    <div class="aurora aurora-two parallax-item" data-depth="0.08"></div>
-    <div class="aurora aurora-three parallax-item" data-depth="0.03"></div>
-
-    <span class="floating-glyph glyph-psi parallax-item" data-depth="0.09">&#936;</span>
-    <span class="floating-glyph glyph-psi small parallax-item" data-depth="0.05">&#936;</span>
-
-    <svg class="floating-illustration motif-brain parallax-item" data-depth="0.1" viewBox="0 0 140 140" fill="none">
-      <path d="M53 26c-14 0-24 10-24 23 0 3 1 6 2 9-10 4-16 13-16 24 0 14 11 25 25 25h7c3 10 12 17 23 17 10 0 19-6 23-15 3 1 6 2 10 2 15 0 27-12 27-27 0-9-4-17-11-22 2-3 3-7 3-11 0-13-11-24-24-24-5 0-9 1-13 4-4-8-13-13-23-13-9 0-18 4-23 8-2 0-4 0-6 0Z" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M53 34c-5 7-6 15-2 24m18-27c-2 8 0 16 6 23m-29 17c10 2 16 10 18 20m16-50c8 2 14 8 17 17m-4 30c-8 0-15 5-18 13" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/>
-    </svg>
-
-    <svg class="floating-illustration motif-book parallax-item" data-depth="0.06" viewBox="0 0 120 120" fill="none">
-      <path d="M26 28c0-7 5-12 12-12h46c7 0 12 5 12 12v58c0 7-5 12-12 12H38c-7 0-12 5-12 12V28Z" stroke="currentColor" stroke-width="4.5" stroke-linejoin="round"/>
-      <path d="M36 30h48M36 48h35M36 66h41M36 84h28" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/>
-    </svg>
-
-    <svg class="floating-illustration motif-profile parallax-item" data-depth="0.07" viewBox="0 0 140 140" fill="none">
-      <path d="M88 21c-7 0-13 5-15 11-5 2-9 7-9 13 0 4 1 8 4 11-5 3-8 8-8 14 0 8 6 15 14 16-4 18-18 30-38 35M89 22c11 8 18 22 18 38 0 19-10 36-25 45" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M65 54c6 2 12 1 18-2m-14 18c4 2 9 2 14 0" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
-    </svg>
-
-    <svg class="floating-illustration motif-mind parallax-item" data-depth="0.04" viewBox="0 0 160 160" fill="none">
-      <path d="M80 19c-29 0-53 24-53 53 0 20 11 37 27 46v19l18-11c3 1 5 1 8 1 29 0 53-24 53-55 0-29-24-53-53-53Z" stroke="currentColor" stroke-width="4.5" stroke-linejoin="round"/>
-      <circle cx="62" cy="78" r="5" fill="currentColor"/>
-      <circle cx="82" cy="61" r="5" fill="currentColor"/>
-      <circle cx="100" cy="83" r="5" fill="currentColor"/>
-      <path d="M62 78 82 61l18 22m-38 0 19 15 19-15" stroke="currentColor" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </div>
+  {% include "_psyche_background.html" %}
   <div class="cursor-glow" id="cursor-glow"></div>
 
   <main class="page">
@@ -253,32 +223,47 @@
 
   <script>
     const cursorGlow = document.getElementById("cursor-glow");
-    const parallaxItems = document.querySelectorAll(".parallax-item");
+    const parallaxItems = Array.from(document.querySelectorAll(".parallax-item"));
     const promoBanner = document.getElementById("sara-banner");
     const promoClose = document.getElementById("promo-close");
     const promoStorageKey = "organizadorcitotrululu-promo-dismissed";
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
 
-    window.addEventListener("pointermove", (event) => {
-      const x = event.clientX;
-      const y = event.clientY;
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
-
-      cursorGlow.style.transform = `translate(${x - 120}px, ${y - 120}px)`;
+    const animateParallax = () => {
+      currentX += (targetX - currentX) * 0.085;
+      currentY += (targetY - currentY) * 0.085;
 
       parallaxItems.forEach((item) => {
-        const depth = Number(item.dataset.depth || 0.05);
-        const offsetX = (x - centerX) * depth;
-        const offsetY = (y - centerY) * depth;
-        item.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0)`;
+        const depth = Number(item.dataset.depth || 0.06);
+        const rotateFactor = Number(item.dataset.rotate || 0);
+        const offsetX = currentX * depth;
+        const offsetY = currentY * depth;
+        const rotation = currentX * rotateFactor;
+        item.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0) rotate(${rotation}deg)`;
       });
+
+      window.requestAnimationFrame(animateParallax);
+    };
+
+    window.addEventListener("pointermove", (event) => {
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      targetX = event.clientX - centerX;
+      targetY = event.clientY - centerY;
+      cursorGlow.style.opacity = "0.92";
+      cursorGlow.style.transform = `translate(${event.clientX - 160}px, ${event.clientY - 160}px)`;
     });
 
     window.addEventListener("pointerleave", () => {
-      parallaxItems.forEach((item) => {
-        item.style.transform = "translate3d(0, 0, 0)";
-      });
+      targetX = 0;
+      targetY = 0;
+      cursorGlow.style.opacity = "0.58";
     });
+
+    animateParallax();
 
     try {
       if (window.localStorage.getItem(promoStorageKey) === "1") {

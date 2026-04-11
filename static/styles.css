@@ -39,10 +39,11 @@ body {
   color: var(--ink);
   font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   background:
-    radial-gradient(circle at 12% 18%, rgba(168, 207, 235, 0.45), transparent 22%),
-    radial-gradient(circle at 86% 12%, rgba(195, 220, 241, 0.42), transparent 24%),
-    radial-gradient(circle at 78% 76%, rgba(157, 194, 225, 0.26), transparent 22%),
-    linear-gradient(180deg, var(--bg-top) 0%, #eaf5fd 48%, var(--bg-bottom) 100%);
+    radial-gradient(circle at 12% 18%, rgba(168, 207, 235, 0.58), transparent 24%),
+    radial-gradient(circle at 86% 12%, rgba(195, 220, 241, 0.54), transparent 26%),
+    radial-gradient(circle at 74% 76%, rgba(157, 194, 225, 0.34), transparent 24%),
+    radial-gradient(circle at 24% 74%, rgba(132, 177, 211, 0.22), transparent 26%),
+    linear-gradient(180deg, #f6fbff 0%, #e7f3fd 38%, #d7ebfb 100%);
 }
 
 .psyche-background {
@@ -51,123 +52,492 @@ body {
   overflow: hidden;
   pointer-events: none;
   z-index: 0;
+  isolation: isolate;
+}
+
+.psyche-background::before,
+.psyche-background::after {
+  content: "";
+  position: absolute;
+  inset: -6%;
+}
+
+.psyche-background::before {
+  background:
+    radial-gradient(circle at 18% 20%, rgba(255, 255, 255, 0.32) 0 2px, transparent 3px) 0 0 / 180px 180px,
+    radial-gradient(circle at 72% 40%, rgba(171, 203, 231, 0.26) 0 2px, transparent 3px) 0 0 / 220px 220px,
+    repeating-linear-gradient(90deg, transparent 0 132px, rgba(118, 159, 194, 0.06) 132px 134px),
+    repeating-linear-gradient(0deg, transparent 0 132px, rgba(160, 194, 221, 0.045) 132px 134px);
+  opacity: 0.88;
+  animation: atmosphereShift 34s ease-in-out infinite alternate;
+}
+
+.psyche-background::after {
+  background:
+    radial-gradient(circle at 14% 24%, rgba(255, 255, 255, 0.46), transparent 28%),
+    radial-gradient(circle at 76% 14%, rgba(192, 220, 243, 0.28), transparent 30%),
+    radial-gradient(circle at 82% 74%, rgba(124, 168, 204, 0.18), transparent 32%),
+    radial-gradient(circle at 34% 84%, rgba(255, 255, 255, 0.22), transparent 26%);
+  mix-blend-mode: screen;
+  opacity: 0.95;
+}
+
+.psyche-layer {
+  position: absolute;
+  inset: -6%;
+}
+
+.psyche-layer-far {
+  z-index: 0;
+}
+
+.psyche-layer-mid {
+  z-index: 1;
+}
+
+.psyche-layer-near {
+  z-index: 2;
 }
 
 .aurora {
   position: absolute;
   border-radius: 50%;
-  filter: blur(18px);
-  opacity: 0.65;
-  transition: transform 220ms ease-out;
-  animation: breathe 14s ease-in-out infinite;
+  filter: blur(36px);
+  opacity: 0.82;
+  animation: auroraPulse 16s ease-in-out infinite;
 }
 
 .aurora-one {
-  width: 34rem;
-  height: 34rem;
-  top: -8rem;
-  left: -10rem;
-  background: radial-gradient(circle, rgba(175, 216, 243, 0.5), rgba(175, 216, 243, 0.08) 62%, transparent 74%);
+  width: 48rem;
+  height: 48rem;
+  top: -16rem;
+  left: -16rem;
+  background: radial-gradient(circle, rgba(175, 216, 243, 0.62), rgba(175, 216, 243, 0.16) 56%, transparent 74%);
 }
 
 .aurora-two {
-  width: 28rem;
-  height: 28rem;
-  right: -7rem;
-  top: 6rem;
-  background: radial-gradient(circle, rgba(153, 194, 225, 0.44), rgba(153, 194, 225, 0.08) 62%, transparent 76%);
-  animation-delay: -3s;
+  width: 34rem;
+  height: 34rem;
+  right: -8rem;
+  top: 4rem;
+  background: radial-gradient(circle, rgba(153, 194, 225, 0.54), rgba(153, 194, 225, 0.12) 58%, transparent 78%);
+  animation-delay: -4s;
 }
 
 .aurora-three {
-  width: 26rem;
-  height: 26rem;
-  left: 42%;
+  width: 30rem;
+  height: 30rem;
+  left: 38%;
   bottom: -10rem;
-  background: radial-gradient(circle, rgba(204, 221, 237, 0.46), rgba(204, 221, 237, 0.08) 58%, transparent 74%);
+  background: radial-gradient(circle, rgba(204, 221, 237, 0.56), rgba(204, 221, 237, 0.1) 56%, transparent 76%);
   animation-delay: -6s;
 }
 
-.floating-glyph,
-.floating-illustration {
+.aurora-four {
+  width: 26rem;
+  height: 26rem;
+  left: 8%;
+  bottom: 16%;
+  background: radial-gradient(circle, rgba(205, 222, 244, 0.5), rgba(205, 222, 244, 0.06) 54%, transparent 78%);
+  animation-delay: -9s;
+}
+
+.aurora-five {
+  width: 24rem;
+  height: 24rem;
+  right: 16%;
+  bottom: 8%;
+  background: radial-gradient(circle, rgba(125, 171, 210, 0.36), rgba(125, 171, 210, 0.04) 52%, transparent 76%);
+  animation-delay: -12s;
+}
+
+.parallax-item {
   position: absolute;
-  color: rgba(79, 124, 160, 0.18);
   transform: translate3d(0, 0, 0);
-  transition: transform 220ms ease-out, opacity 220ms ease-out;
-  animation: drift 18s ease-in-out infinite;
+  transition: transform 260ms cubic-bezier(0.2, 0.7, 0.2, 1), opacity 260ms ease;
+  will-change: transform, opacity;
+}
+
+.floating-glyph,
+.floating-illustration,
+.neural-web,
+.thought-wave,
+.analysis-arcs,
+.note-sheet,
+.orbit-halo,
+.spark-cluster {
+  animation: ambientPulse 14s ease-in-out infinite;
 }
 
 .floating-glyph {
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(3.2rem, 7vw, 6rem);
   line-height: 1;
-  text-shadow: 0 8px 24px rgba(109, 155, 189, 0.08);
+  text-shadow: 0 16px 34px rgba(109, 155, 189, 0.12);
 }
 
-.glyph-psi {
-  top: 10%;
-  left: 9%;
+.glyph-giant {
+  top: 2%;
+  left: 2%;
+  font-size: clamp(8rem, 16vw, 17rem);
+  color: rgba(86, 135, 174, 0.22);
 }
 
-.glyph-psi.small {
-  top: 60%;
-  right: 11%;
-  font-size: clamp(2.4rem, 5vw, 4rem);
+.glyph-side {
+  right: 7%;
+  bottom: 7%;
+  font-size: clamp(6rem, 12vw, 12rem);
+  color: rgba(98, 149, 188, 0.18);
+  animation-delay: -3s;
+}
+
+.glyph-center {
+  top: 40%;
+  left: 44%;
+  font-size: clamp(4.4rem, 8vw, 7.4rem);
+  color: rgba(118, 160, 194, 0.19);
+  animation-delay: -7s;
+}
+
+.glyph-mini {
+  top: 19%;
+  right: 24%;
+  font-size: clamp(2.8rem, 4vw, 4.3rem);
+  color: rgba(87, 137, 176, 0.3);
   animation-delay: -5s;
 }
 
+.glyph-mini-two {
+  left: 18%;
+  bottom: 18%;
+  font-size: clamp(2.6rem, 4vw, 4rem);
+  color: rgba(116, 162, 196, 0.27);
+  animation-delay: -9s;
+}
+
 .floating-illustration {
-  width: clamp(78px, 11vw, 150px);
+  width: clamp(100px, 12vw, 176px);
   height: auto;
+  opacity: 0.82;
+  filter: drop-shadow(0 12px 26px rgba(107, 148, 182, 0.08));
 }
 
 .motif-brain {
-  top: 16%;
-  right: 13%;
+  top: 9%;
+  right: 8%;
+  width: clamp(120px, 13vw, 190px);
+  color: rgba(82, 134, 176, 0.32);
 }
 
-.motif-book {
-  left: 6%;
-  bottom: 16%;
-  color: rgba(100, 141, 172, 0.14);
+.motif-book-open {
+  left: 4%;
+  top: 22%;
+  width: clamp(126px, 14vw, 208px);
+  color: rgba(99, 144, 180, 0.28);
   animation-delay: -4s;
 }
 
+.motif-book-stack {
+  left: 11%;
+  bottom: 10%;
+  width: clamp(110px, 12vw, 176px);
+  color: rgba(123, 165, 196, 0.26);
+  animation-delay: -8s;
+}
+
 .motif-profile {
-  top: 44%;
-  right: 7%;
-  color: rgba(116, 152, 182, 0.15);
+  top: 45%;
+  right: 4%;
+  width: clamp(120px, 13vw, 188px);
+  color: rgba(110, 149, 180, 0.24);
   animation-delay: -7s;
 }
 
 .motif-mind {
-  left: 42%;
-  top: 12%;
-  color: rgba(140, 167, 190, 0.13);
+  left: 36%;
+  top: 7%;
+  width: clamp(136px, 14vw, 210px);
+  color: rgba(133, 169, 196, 0.22);
   animation-delay: -2s;
+}
+
+.motif-eye {
+  left: 51%;
+  top: 18%;
+  width: clamp(118px, 13vw, 178px);
+  color: rgba(104, 145, 183, 0.24);
+  animation-delay: -6s;
+}
+
+.motif-hourglass {
+  right: 24%;
+  bottom: 13%;
+  width: clamp(100px, 11vw, 160px);
+  color: rgba(99, 137, 171, 0.24);
+  animation-delay: -10s;
+}
+
+.motif-neuron {
+  left: 60%;
+  bottom: 17%;
+  width: clamp(104px, 11vw, 164px);
+  color: rgba(110, 156, 188, 0.28);
+  animation-delay: -4.5s;
+}
+
+.motif-note {
+  right: 17%;
+  top: 36%;
+  width: clamp(96px, 11vw, 150px);
+  color: rgba(140, 175, 201, 0.28);
+  animation-delay: -11s;
+}
+
+.neural-web {
+  width: 32rem;
+  height: 32rem;
+  border-radius: 50%;
+  border: 1px solid rgba(121, 163, 194, 0.24);
+  background:
+    radial-gradient(circle at 26% 34%, rgba(255, 255, 255, 0.44) 0 2px, transparent 3px),
+    radial-gradient(circle at 62% 28%, rgba(192, 220, 244, 0.34) 0 3px, transparent 4px),
+    radial-gradient(circle at 66% 62%, rgba(123, 166, 201, 0.3) 0 3px, transparent 4px),
+    radial-gradient(circle at 34% 70%, rgba(255, 255, 255, 0.28) 0 2px, transparent 3px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 80px rgba(131, 173, 205, 0.07);
+  opacity: 0.64;
+}
+
+.neural-web::before,
+.neural-web::after {
+  content: "";
+  position: absolute;
+  inset: 11%;
+  border-radius: 50%;
+  border: 1px dashed rgba(114, 156, 192, 0.18);
+}
+
+.neural-web::after {
+  inset: 28%;
+  border-style: solid;
+  opacity: 0.62;
+}
+
+.neural-web-one {
+  top: -6%;
+  right: -6%;
+}
+
+.neural-web-two {
+  left: -10%;
+  bottom: -12%;
+  width: 28rem;
+  height: 28rem;
+}
+
+.thought-wave,
+.analysis-arcs,
+.orbit-halo {
+  border-radius: 999px;
+}
+
+.thought-wave {
+  width: 30rem;
+  height: 13rem;
+  border-top: 2px solid rgba(109, 156, 194, 0.2);
+  border-bottom: 1px solid rgba(173, 201, 224, 0.2);
+  opacity: 0.56;
+  filter: drop-shadow(0 12px 28px rgba(108, 147, 180, 0.06));
+}
+
+.thought-wave::before,
+.thought-wave::after {
+  content: "";
+  position: absolute;
+  inset: 16% 8%;
+  border-radius: 999px;
+  border-top: 1px solid rgba(255, 255, 255, 0.34);
+}
+
+.thought-wave::after {
+  inset: 32% 16%;
+  border-top-color: rgba(118, 159, 191, 0.22);
+}
+
+.thought-wave-one {
+  top: 10%;
+  left: 20%;
+}
+
+.thought-wave-two {
+  right: 10%;
+  top: 55%;
+  width: 26rem;
+  height: 11rem;
+}
+
+.analysis-arcs {
+  width: 22rem;
+  height: 22rem;
+  border: 1px solid rgba(120, 160, 196, 0.18);
+  opacity: 0.5;
+}
+
+.analysis-arcs::before,
+.analysis-arcs::after {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.analysis-arcs::after {
+  inset: 28%;
+  border-color: rgba(138, 176, 208, 0.18);
+}
+
+.analysis-arcs-one {
+  top: 42%;
+  left: -4%;
+}
+
+.analysis-arcs-two {
+  right: 28%;
+  bottom: -6%;
+  width: 18rem;
+  height: 18rem;
+}
+
+.orbit-halo {
+  width: 11rem;
+  height: 11rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 0 0 1px rgba(127, 168, 198, 0.12), 0 0 40px rgba(167, 201, 225, 0.08);
+  opacity: 0.6;
+}
+
+.orbit-one {
+  left: 30%;
+  top: 58%;
+}
+
+.orbit-two {
+  right: 18%;
+  top: 14%;
+  width: 14rem;
+  height: 14rem;
+}
+
+.note-sheet {
+  width: 112px;
+  height: 146px;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.52), rgba(221, 236, 248, 0.4)),
+    repeating-linear-gradient(180deg, rgba(124, 165, 197, 0.16) 0 2px, transparent 2px 18px);
+  box-shadow: 0 18px 34px rgba(105, 143, 173, 0.1);
+  opacity: 0.84;
+}
+
+.note-sheet::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(196, 221, 242, 0.5));
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  border-top-right-radius: 22px;
+}
+
+.note-sheet-one {
+  right: 12%;
+  bottom: 32%;
+}
+
+.note-sheet-two {
+  left: 24%;
+  top: 66%;
+  width: 94px;
+  height: 126px;
+}
+
+.spark-cluster {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow:
+    16px 10px 0 0 rgba(190, 220, 243, 0.48),
+    36px 4px 0 0 rgba(122, 166, 201, 0.42),
+    48px 24px 0 0 rgba(255, 255, 255, 0.44),
+    10px 38px 0 0 rgba(152, 190, 220, 0.38),
+    30px 48px 0 0 rgba(113, 160, 195, 0.34);
+  opacity: 0.74;
+}
+
+.spark-one {
+  left: 52%;
+  top: 54%;
+}
+
+.spark-two {
+  right: 34%;
+  top: 30%;
 }
 
 .cursor-glow {
   position: fixed;
-  width: 240px;
-  height: 240px;
+  width: 320px;
+  height: 320px;
   border-radius: 50%;
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(circle, rgba(171, 210, 238, 0.38) 0%, rgba(171, 210, 238, 0.18) 36%, rgba(171, 210, 238, 0) 72%);
+    radial-gradient(circle, rgba(181, 217, 242, 0.46) 0%, rgba(171, 210, 238, 0.22) 34%, rgba(171, 210, 238, 0) 72%);
   mix-blend-mode: screen;
-  transition: transform 70ms linear;
+  opacity: 0.82;
+  transition: transform 120ms linear, opacity 260ms ease;
 }
 
-@keyframes drift {
-  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
-  50% { transform: translate3d(0, -12px, 0) rotate(2deg); }
+@keyframes ambientPulse {
+  0%,
+  100% {
+    opacity: 0.44;
+    filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+  }
+  50% {
+    opacity: 0.82;
+    filter: drop-shadow(0 12px 26px rgba(133, 173, 204, 0.08));
+  }
 }
 
-@keyframes breathe {
-  0%, 100% { opacity: 0.48; transform: scale(1); }
-  50% { opacity: 0.72; transform: scale(1.06); }
+@keyframes auroraPulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    filter: blur(32px);
+  }
+  50% {
+    opacity: 0.92;
+    filter: blur(44px);
+  }
+}
+
+@keyframes atmosphereShift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-1.2%, 1.5%, 0) scale(1.03);
+  }
+  100% {
+    transform: translate3d(1.4%, -1%, 0) scale(1.05);
+  }
 }
 
 .page {
@@ -1309,6 +1679,16 @@ button:hover {
   .cursor-glow {
     width: 180px;
     height: 180px;
+  }
+
+  .aurora-four,
+  .aurora-five,
+  .analysis-arcs-two,
+  .thought-wave-two,
+  .note-sheet-two,
+  .spark-two,
+  .motif-hourglass {
+    display: none;
   }
 
   .calendar-heading-row {
