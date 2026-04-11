@@ -1,4 +1,6 @@
 :root {
+  --promo-ribbon-offset: 18px;
+  --promo-ribbon-height: 62px;
   --bg-top: #f3faff;
   --bg-bottom: #dceefb;
   --surface: rgba(250, 253, 255, 0.62);
@@ -545,7 +547,7 @@ body {
   z-index: 1;
   width: min(1280px, calc(100% - 28px));
   margin: 0 auto;
-  padding: 30px 0 72px;
+  padding: calc(var(--promo-ribbon-height) + 40px) 0 72px;
 }
 
 .auth-page {
@@ -617,6 +619,62 @@ body {
   font-size: 0.96rem;
   font-weight: 700;
   box-shadow: var(--shadow-soft);
+}
+
+.promo-ribbon {
+  position: fixed;
+  top: var(--promo-ribbon-offset);
+  left: 50%;
+  z-index: 46;
+  width: min(980px, calc(100% - 24px));
+  transform: translateX(-50%);
+  pointer-events: none;
+  animation: promoRibbonIn 0.72s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.promo-ribbon-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: var(--promo-ribbon-height);
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  background:
+    linear-gradient(135deg, rgba(156, 207, 247, 0.74), rgba(190, 204, 255, 0.68) 52%, rgba(232, 240, 255, 0.6)),
+    rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 18px 42px rgba(76, 113, 148, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.promo-ribbon-badge,
+.promo-ribbon-copy {
+  color: #173a59;
+  white-space: nowrap;
+}
+
+.promo-ribbon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.56);
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  box-shadow: 0 10px 20px rgba(87, 126, 156, 0.12);
+  animation: promoBadgePulse 2.8s ease-in-out infinite;
+}
+
+.promo-ribbon-copy {
+  font-size: 0.9rem;
+  font-weight: 700;
+  opacity: 0.88;
 }
 
 .hero {
@@ -1497,6 +1555,7 @@ button:hover {
   font-size: clamp(1.3rem, 1.1rem + 0.55vw, 1.62rem);
   line-height: 1.1;
   color: #123755;
+  animation: promoTitlePulse 3.6s ease-in-out infinite;
 }
 
 .promo-subtitle {
@@ -1573,6 +1632,39 @@ button:hover {
   }
 }
 
+@keyframes promoRibbonIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes promoBadgePulse {
+  0%,
+  100% {
+    box-shadow: 0 10px 20px rgba(87, 126, 156, 0.12);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 14px 28px rgba(87, 126, 156, 0.2);
+    transform: scale(1.02);
+  }
+}
+
+@keyframes promoTitlePulse {
+  0%,
+  100% {
+    text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+  }
+  50% {
+    text-shadow: 0 0 18px rgba(255, 255, 255, 0.22);
+  }
+}
+
 @media (max-width: 980px) {
   .hero,
   .auth-grid {
@@ -1609,12 +1701,28 @@ button:hover {
     bottom: 18px;
     width: min(330px, calc(100vw - 24px));
   }
+
+  .promo-ribbon {
+    width: min(820px, calc(100% - 20px));
+  }
+
+  .promo-ribbon-inner {
+    flex-wrap: wrap;
+    border-radius: 28px;
+    padding: 12px 16px;
+  }
+
+  .promo-ribbon-badge,
+  .promo-ribbon-copy {
+    white-space: normal;
+    text-align: center;
+  }
 }
 
 @media (max-width: 860px) {
   .page {
     width: min(100% - 18px, 1160px);
-    padding-top: 18px;
+    padding-top: calc(var(--promo-ribbon-height) + 56px);
   }
 
   .logout-form {
@@ -1655,6 +1763,14 @@ button:hover {
     width: min(312px, calc(100vw - 22px));
     padding: 16px 16px 14px;
     border-radius: 24px;
+  }
+
+  .promo-ribbon {
+    top: 12px;
+  }
+
+  .promo-ribbon-inner {
+    min-height: auto;
   }
 }
 
@@ -1737,5 +1853,28 @@ button:hover {
 
   .promo-disclaimer {
     font-size: 0.68rem;
+  }
+
+  .promo-ribbon {
+    width: calc(100% - 16px);
+    top: 8px;
+  }
+
+  .promo-ribbon-inner {
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 20px;
+  }
+
+  .promo-ribbon-badge {
+    width: 100%;
+    padding: 9px 12px;
+    font-size: 0.78rem;
+  }
+
+  .promo-ribbon-copy {
+    width: 100%;
+    font-size: 0.78rem;
+    line-height: 1.35;
   }
 }

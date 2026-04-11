@@ -8,6 +8,7 @@
 </head>
 <body>
   {% include "_psyche_background.html" %}
+  {% include "_sara_ribbon.html" %}
   <div class="cursor-glow" id="cursor-glow"></div>
 
   <main class="page">
@@ -203,21 +204,20 @@
           {% endfor %}
         </div>
       </div>
-
     </section>
   </main>
 
   <aside class="promo-banner" id="sara-banner" aria-label="Promocion personal">
-    <button type="button" class="promo-close" id="promo-close" aria-label="Cerrar banner">×</button>
+    <button type="button" class="promo-close" id="promo-close" aria-label="Cerrar banner">&times;</button>
     <div class="promo-shine" aria-hidden="true"></div>
-    <p class="promo-kicker">Edicion premium</p>
-    <h3>💙 Vota Sara Garcia</h3>
-    <p class="promo-subtitle">Sarita de repre ✨</p>
+    <p class="promo-kicker">Presencia permanente</p>
+    <h3>&#128153; Vota por Sara Garcia</h3>
+    <p class="promo-subtitle">Sarita de repre &#10024;</p>
     <p class="promo-copy">
-      La creadora de esta pagina 😉
+      La creadora de esta pagina quiere tu voto &#128521;
       <span>(Sarita Trululu quiere que votes por ella en su candidatura de representante)</span>
     </p>
-    <button type="button" class="promo-cta">Apoyar 💙</button>
+    <button type="button" class="promo-cta">Apoyar &#128153;</button>
     <p class="promo-disclaimer">El uso de esta pagina no implica apoyo politico obligatorio</p>
   </aside>
 
@@ -226,7 +226,6 @@
     const parallaxItems = Array.from(document.querySelectorAll(".parallax-item"));
     const promoBanner = document.getElementById("sara-banner");
     const promoClose = document.getElementById("promo-close");
-    const promoStorageKey = "organizadorcitotrululu-promo-dismissed";
     let targetX = 0;
     let targetY = 0;
     let currentX = 0;
@@ -265,22 +264,8 @@
 
     animateParallax();
 
-    try {
-      if (window.localStorage.getItem(promoStorageKey) === "1") {
-        promoBanner.classList.add("is-hidden");
-      }
-    } catch (error) {
-      console.debug("No se pudo leer el estado del banner", error);
-    }
-
     promoClose?.addEventListener("click", () => {
       promoBanner.classList.add("is-closing");
-      try {
-        window.localStorage.setItem(promoStorageKey, "1");
-      } catch (error) {
-        console.debug("No se pudo guardar el estado del banner", error);
-      }
-
       window.setTimeout(() => {
         promoBanner.classList.add("is-hidden");
         promoBanner.classList.remove("is-closing");
