@@ -44,11 +44,37 @@
     <section class="panel">
       <div class="message success">Tu calendario ahora vive dentro de esta aplicacion y cada casilla es editable.</div>
       <div class="google-setup">
-        <h2>Como funciona</h2>
-        <p class="setup-copy">
-          Analiza un plan de curso o de evaluacion, ajusta los avisos y luego modifica o agrega tareas
-          directamente dentro del planner mensual.
-        </p>
+        <h2>&#191;Como funciona?</h2>
+        <div class="setup-steps" aria-label="Pasos para usar la aplicacion">
+          <article class="setup-step">
+            <span class="step-icon" aria-hidden="true">&#128196;</span>
+            <div class="step-copy">
+              <h3>1. Sube tu plan de curso</h3>
+              <p>En la seccion de subir archivo, carga el plan de curso de tu materia en PDF o Word.</p>
+            </div>
+          </article>
+          <article class="setup-step">
+            <span class="step-icon" aria-hidden="true">&#129504;</span>
+            <div class="step-copy">
+              <h3>2. El sistema analiza la informacion</h3>
+              <p>La pagina detecta automaticamente lecturas, entregas, parciales, exposiciones y otras fechas importantes.</p>
+            </div>
+          </article>
+          <article class="setup-step">
+            <span class="step-icon" aria-hidden="true">&#128197;</span>
+            <div class="step-copy">
+              <h3>3. Todo se organiza en el calendario</h3>
+              <p>Las fechas se ubican automaticamente para que sepas que tienes que hacer cada dia.</p>
+            </div>
+          </article>
+          <article class="setup-step">
+            <span class="step-icon" aria-hidden="true">&#9989;</span>
+            <div class="step-copy">
+              <h3>4. Consulta tus actividades facilmente</h3>
+              <p>Revisa el calendario y manten al dia todas tus responsabilidades academicas en un solo lugar.</p>
+            </div>
+          </article>
+        </div>
         <form action="/calendar/clear" method="post" class="google-actions">
           <button type="submit" class="secondary-button">Limpiar calendario</button>
         </form>
@@ -57,6 +83,7 @@
       <form action="/analyze" method="post" enctype="multipart/form-data" class="upload-form">
         <label for="file" class="input-label">Selecciona tu archivo academico</label>
         <input id="file" name="file" type="file" accept=".pdf,.docx" required>
+        <p class="upload-help">Sube aqui tu plan de curso para que el sistema organice automaticamente tus fechas en el calendario.</p>
         <label for="reminder_days" class="input-label">Dias de anticipacion sugeridos</label>
         <input
           id="reminder_days"
