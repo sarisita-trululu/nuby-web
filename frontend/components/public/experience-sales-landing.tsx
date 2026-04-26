@@ -195,7 +195,7 @@ function LandingActions({
           {primaryLabel}
         </Button>
         <Button
-          className="min-h-14 min-w-[240px] border border-black/10 bg-white px-7 text-base font-semibold text-[#1f3d2b] shadow-[0_14px_32px_rgba(14,26,22,0.12)] hover:bg-[#f5f5f5] hover:text-[#1f3d2b]"
+          className="min-h-14 min-w-[240px] px-7 text-base font-semibold text-[#1f3d2b]"
           href={href}
           rel="noreferrer"
           target="_blank"
@@ -599,10 +599,11 @@ export function ExperienceSalesLanding({
                 mismo y reservar tu lugar con un solo mensaje.
               </p>
               <Button
-                className="mt-10 min-h-14 min-w-[240px] bg-white px-7 text-base text-pine hover:bg-white/90"
+                className="mt-10 min-h-14 min-w-[240px] border border-[rgba(31,61,43,0.18)] bg-white px-7 text-base font-bold text-[#1f3d2b] shadow-[0_14px_32px_rgba(14,26,22,0.12)] hover:bg-[#f5f1e8] hover:text-[#1f3d2b] hover:shadow-[0_18px_38px_rgba(14,26,22,0.16)]"
                 href={reserveLink}
                 rel="noreferrer"
                 target="_blank"
+                variant="secondary"
               >
                 Reservar mi lugar
               </Button>

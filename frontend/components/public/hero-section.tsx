@@ -66,10 +66,11 @@ export function HeroSection({ settings }: HeroSectionProps) {
             className="mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap"
           >
             <Button
-              className="min-h-14 w-full border border-black/10 bg-white text-[#1f3d2b] shadow-[0_16px_40px_rgba(0,0,0,0.16)] hover:bg-white sm:w-auto"
+              className="min-h-14 w-full border border-[rgba(31,61,43,0.18)] bg-white text-[#1f3d2b] shadow-[0_16px_40px_rgba(0,0,0,0.16)] hover:bg-[#f5f1e8] hover:text-[#1f3d2b] sm:w-auto"
               href={buildWhatsappLink(DEFAULT_CONTACT_MESSAGE, settings)}
               rel="noreferrer"
               target="_blank"
+              variant="secondary"
             >
               Agendar cita
             </Button>

@@ -64,7 +64,7 @@ export function formatStatus(status: Experience["status"]) {
 }
 
 const DEFAULT_WHATSAPP_LINK =
-  "https://wa.me/573012799371?text=Hola%20Nuby,%20conoc%C3%AD%20tu%20trabajo%20y%20me%20gustar%C3%ADa%20recibir%20informaci%C3%B3n%20sobre%20tus%20servicios%20y%20las%20experiencias%20de%20PsicoSendero.%20Quedo%20atento(a).%20Gracias.";
+  "https://wa.me/573012799371?text=Hola%20Nuby,%20quisiera%20recibir%20informaci%C3%B3n%20sobre%20tus%20servicios%20y%20las%20experiencias%20de%20PsicoSendero.%20Quedo%20atento(a).%20Muchas%20gracias.";
 
 export function buildWhatsappLink(_message: string, _settings?: SiteSettingsMap) {
   return DEFAULT_WHATSAPP_LINK;

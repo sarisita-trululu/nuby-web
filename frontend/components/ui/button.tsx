@@ -23,7 +23,7 @@ const variants = {
   primary:
     "bg-forest text-white shadow-soft hover:bg-pine focus-visible:outline-forest",
   secondary:
-    "border border-black/10 bg-white text-[#1f3d2b] shadow-[0_14px_32px_rgba(14,26,22,0.12)] hover:border-black/12 hover:bg-white hover:shadow-[0_18px_38px_rgba(14,26,22,0.16)] focus-visible:outline-forest",
+    "border border-[rgba(31,61,43,0.18)] bg-white text-[#1f3d2b] shadow-[0_14px_32px_rgba(14,26,22,0.12)] hover:bg-[#f5f1e8] hover:text-[#1f3d2b] hover:shadow-[0_18px_38px_rgba(14,26,22,0.16)] focus-visible:outline-forest",
   ghost:
     "bg-transparent text-forest hover:bg-forest/5 focus-visible:outline-forest",
 };
