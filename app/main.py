@@ -42,6 +42,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+initialize_directories()
+
 app.mount(settings.uploads_url_prefix, StaticFiles(directory=str(settings.uploads_path)), name="uploads")
 
 

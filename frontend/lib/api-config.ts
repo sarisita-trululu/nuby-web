@@ -1,4 +1,5 @@
 const LOCAL_API_URL = "http://localhost:8000";
+const PRODUCTION_API_URL = "https://web-production-9b25b.up.railway.app";
 
 function normalizeUrl(value: string) {
   return value.replace(/\/+$/, "");
@@ -15,7 +16,7 @@ export function getApiBaseUrl() {
     return LOCAL_API_URL;
   }
 
-  return null;
+  return PRODUCTION_API_URL;
 }
 
 export function requireApiBaseUrl() {
