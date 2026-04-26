@@ -55,7 +55,7 @@ PORT=8000
 HOST=0.0.0.0
 SECRET_KEY=change-this-secret-key-in-production
 DATABASE_URL=sqlite:///./nuby.db
-CORS_ORIGINS=http://localhost:3000
+CORS_ORIGINS=https://nuby-web-wqdz.vercel.app,http://localhost:3000
 ACCESS_TOKEN_EXPIRE_MINUTES=720
 UPLOAD_DIR=uploads
 MAX_UPLOAD_SIZE_MB=5
@@ -68,6 +68,13 @@ ADMIN_PASSWORD=ChangeMe123!
 
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_WHATSAPP_NUMBER=573012799371
+```
+
+Produccion en Vercel:
+
+```env
+NEXT_PUBLIC_API_URL=https://URL_REAL_DEL_BACKEND
 NEXT_PUBLIC_WHATSAPP_NUMBER=573012799371
 ```
 
@@ -123,7 +130,7 @@ Variables recomendadas del backend en Railway:
 ```env
 SECRET_KEY=una-clave-larga-y-segura
 DATABASE_URL=${{Postgres.DATABASE_URL}}
-CORS_ORIGINS=https://TU_FRONTEND.up.railway.app
+CORS_ORIGINS=https://nuby-web-wqdz.vercel.app,http://localhost:3000
 ACCESS_TOKEN_EXPIRE_MINUTES=720
 UPLOAD_DIR=/data/uploads
 MAX_UPLOAD_SIZE_MB=5
@@ -167,8 +174,8 @@ Despues de desplegar:
 
 1. Genera dominio publico para backend
 2. Genera dominio publico para frontend
-3. Actualiza `NEXT_PUBLIC_API_URL` en frontend con el dominio real del backend
-4. Actualiza `CORS_ORIGINS` en backend con el dominio real del frontend
+3. Actualiza `NEXT_PUBLIC_API_URL` en Vercel con el dominio real del backend
+4. Actualiza `CORS_ORIGINS` en Railway con `https://nuby-web-wqdz.vercel.app,http://localhost:3000`
 5. Redeploy de ambos servicios
 
 ## Comprobaciones despues del despliegue
@@ -177,6 +184,7 @@ Verifica:
 
 - frontend abre correctamente
 - backend responde en `/health`
+- formulario de contacto envia a `${NEXT_PUBLIC_API_URL}/api/contact`
 - login admin funciona
 - crear experiencia funciona
 - subir imagen funciona

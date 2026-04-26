@@ -6,11 +6,10 @@ import type {
   SiteSetting,
   Testimonial,
 } from "@/lib/types";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+import { requireApiBaseUrl } from "@/lib/api-config";
 
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${API_URL}${path}`, {
+  const response = await fetch(`${requireApiBaseUrl()}${path}`, {
     ...init,
     cache: "no-store",
     headers: {

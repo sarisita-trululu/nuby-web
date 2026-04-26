@@ -28,7 +28,8 @@ export function HeroSection({ settings }: HeroSectionProps) {
           src="/mountain-mist.svg"
         />
       </motion.div>
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(31,61,53,0.28),rgba(31,61,53,0.68))]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,18,15,0.42),rgba(18,38,32,0.78))]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.1),transparent_32%),linear-gradient(125deg,rgba(0,0,0,0.12),transparent_46%)]" />
       <div className="absolute inset-x-0 bottom-0 h-44 bg-[linear-gradient(180deg,transparent,rgba(255,253,248,0.95))]" />
 
       <div className="page-section relative flex min-h-[88vh] items-center">
@@ -37,7 +38,7 @@ export function HeroSection({ settings }: HeroSectionProps) {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="mb-4 text-xs font-semibold uppercase tracking-[0.4em] text-white/70"
+            className="mb-4 text-xs font-semibold uppercase tracking-[0.4em] text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.28)]"
           >
             Psicologia clinica | Organizacional | PsicoSendero
           </motion.p>
@@ -45,7 +46,7 @@ export function HeroSection({ settings }: HeroSectionProps) {
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.1 }}
-            className="max-w-3xl font-serif text-5xl leading-[0.95] md:text-7xl"
+            className="max-w-3xl font-serif text-5xl leading-[0.95] text-[#fffdf8] [text-shadow:0_10px_35px_rgba(0,0,0,0.34)] md:text-7xl"
           >
             {settings.hero_title ?? FALLBACK_SITE_SETTINGS.hero_title}
           </motion.h1>
@@ -53,7 +54,7 @@ export function HeroSection({ settings }: HeroSectionProps) {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.2 }}
-            className="mt-6 max-w-2xl text-lg leading-8 text-white/82 md:text-xl"
+            className="mt-6 max-w-2xl text-lg leading-8 text-white/95 [text-shadow:0_6px_18px_rgba(0,0,0,0.28)] md:text-xl"
           >
             {settings.hero_subtitle ?? FALLBACK_SITE_SETTINGS.hero_subtitle}
           </motion.p>
@@ -62,17 +63,21 @@ export function HeroSection({ settings }: HeroSectionProps) {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="mt-10 flex flex-col gap-4 sm:flex-row"
+            className="mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap"
           >
             <Button
-              className="bg-white text-pine hover:bg-sand"
+              className="min-h-14 w-full border border-black/10 bg-white text-[#1f3d2b] shadow-[0_16px_40px_rgba(0,0,0,0.16)] hover:bg-white sm:w-auto"
               href={buildWhatsappLink(DEFAULT_CONTACT_MESSAGE, settings)}
               rel="noreferrer"
               target="_blank"
             >
               Agendar cita
             </Button>
-            <Button href="/#psicosendero" variant="secondary">
+            <Button
+              className="min-h-14 w-full justify-center text-[#1f3d2b] shadow-[0_16px_40px_rgba(0,0,0,0.14)] sm:w-auto"
+              href="/#psicosendero"
+              variant="secondary"
+            >
               Ver experiencia en la montana
             </Button>
           </motion.div>

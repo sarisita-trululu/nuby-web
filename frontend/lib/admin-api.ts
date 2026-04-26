@@ -2,6 +2,7 @@
 
 import axios from "axios";
 
+import { requireApiBaseUrl } from "@/lib/api-config";
 import type {
   AuthUser,
   BlogPayload,
@@ -20,11 +21,9 @@ import type {
   TestimonialPayload,
 } from "@/lib/types";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
-
 function client(token?: string) {
   return axios.create({
-    baseURL: API_URL,
+    baseURL: requireApiBaseUrl(),
     headers: token
       ? {
           Authorization: `Bearer ${token}`,

@@ -94,6 +94,9 @@ export default function AdminLoginPage() {
             Ingreso privado
           </p>
           <h1 className="mt-4 font-serif text-5xl text-pine">Bienvenida</h1>
+          <p className="mt-3 text-sm font-medium text-[#1f3d2b] md:text-base">
+            Tia te amo, eres una tesa
+          </p>
           <p className="mt-4 text-sm leading-7 text-pine/70">
             Inicia sesion para gestionar la web de Nuby con total privacidad.
           </p>

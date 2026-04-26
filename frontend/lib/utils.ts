@@ -63,22 +63,11 @@ export function formatStatus(status: Experience["status"]) {
   return labels[status];
 }
 
-export function buildWhatsappLink(message: string, settings?: SiteSettingsMap) {
-  const whatsappUrl = settings?.whatsapp_url;
-  const whatsappNumber =
-    settings?.whatsapp_number ?? process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
-  const encodedMessage = encodeURIComponent(message);
+const DEFAULT_WHATSAPP_LINK =
+  "https://wa.me/573012799371?text=Hola%20Nuby%20💚✨%20me%20encantó%20lo%20que%20compartes%20🌿%0AQuisiera%20recibir%20más%20información%20sobre%20tus%20servicios%20y%20PsicoSendero%20🌄💫%0ASiento%20que%20es%20justo%20lo%20que%20necesito%20para%20este%20momento%20de%20mi%20vida%20🌱🤍";
 
-  if (whatsappUrl) {
-    const divider = whatsappUrl.includes("?") ? "&" : "?";
-    return `${whatsappUrl}${divider}text=${encodedMessage}`;
-  }
-
-  if (whatsappNumber) {
-    return `https://wa.me/${whatsappNumber.replace(/\D/g, "")}?text=${encodedMessage}`;
-  }
-
-  return `https://wa.me/?text=${encodedMessage}`;
+export function buildWhatsappLink(_message: string, _settings?: SiteSettingsMap) {
+  return DEFAULT_WHATSAPP_LINK;
 }
 
 export function firstParagraph(content: string) {

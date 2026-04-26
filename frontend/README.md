@@ -53,9 +53,18 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 NEXT_PUBLIC_WHATSAPP_NUMBER=573012799371
 ```
 
+Produccion en Vercel:
+
+```env
+NEXT_PUBLIC_API_URL=https://URL_REAL_DEL_BACKEND
+NEXT_PUBLIC_WHATSAPP_NUMBER=573012799371
+```
+
 ## Conexion con backend
 
 - El frontend consume el backend FastAPI del mismo repositorio.
+- Todas las llamadas del formulario de contacto, login admin y panel usan `NEXT_PUBLIC_API_URL`.
+- En produccion no se usa `localhost`; si falta `NEXT_PUBLIC_API_URL`, las acciones del backend fallaran hasta configurarla.
 - El panel admin usa JWT y envia `Authorization: Bearer <token>`.
 - La subida de imagenes usa `POST /api/admin/uploads`.
 

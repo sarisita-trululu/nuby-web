@@ -75,7 +75,7 @@ export function AdminShell({ children }: AdminShellProps) {
   return (
     <div className="min-h-screen bg-[linear-gradient(180deg,rgba(255,253,248,1),rgba(239,244,239,0.95))]">
       <div className="mx-auto grid min-h-screen max-w-[1600px] lg:grid-cols-[280px_1fr]">
-        <aside className="hidden border-r border-forest/10 bg-pine px-6 py-8 text-white lg:block">
+        <aside className="hidden min-h-screen flex-col border-r border-forest/10 bg-pine px-6 py-8 text-white lg:flex">
           <div>
             <p className="text-xs uppercase tracking-[0.35em] text-white/45">
               Nuby Arango Perez
@@ -106,14 +106,22 @@ export function AdminShell({ children }: AdminShellProps) {
             })}
           </nav>
 
-          <button
-            className="mt-8 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-white/70 transition hover:bg-white/8 hover:text-white"
-            type="button"
-            onClick={logout}
-          >
-            <LogOut className="h-4 w-4" />
-            Cerrar sesion
-          </button>
+          <div className="mt-auto space-y-4 pt-10">
+            <button
+              className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-white/70 transition hover:bg-white/8 hover:text-white"
+              type="button"
+              onClick={logout}
+            >
+              <LogOut className="h-4 w-4" />
+              Cerrar sesion
+            </button>
+
+            <div className="rounded-[1.75rem] border border-white/12 bg-white/10 px-5 py-6 text-center shadow-[0_18px_45px_rgba(6,24,20,0.18)] backdrop-blur-sm">
+              <p className="font-serif text-lg leading-relaxed text-white/95">
+                tia te amo, eres una tesa
+              </p>
+            </div>
+          </div>
         </aside>
 
         <div className="flex min-h-screen flex-col">
@@ -160,6 +168,11 @@ export function AdminShell({ children }: AdminShellProps) {
                     </Link>
                   );
                 })}
+                <div className="mt-2 rounded-[1.6rem] border border-forest/10 bg-forest/5 px-4 py-5 text-center shadow-[0_16px_35px_rgba(31,61,53,0.08)]">
+                  <p className="font-serif text-base leading-relaxed text-pine">
+                    tia te amo, eres una tesa
+                  </p>
+                </div>
               </div>
             ) : null}
           </header>

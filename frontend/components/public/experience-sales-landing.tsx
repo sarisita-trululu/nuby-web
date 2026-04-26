@@ -195,12 +195,13 @@ function LandingActions({
           {primaryLabel}
         </Button>
         <Button
-          className="min-h-14 min-w-[240px] border-white/30 bg-white/10 px-7 text-base text-white hover:bg-white/20 hover:text-white"
+          className="min-h-14 min-w-[240px] border border-black/10 bg-white px-7 text-base font-semibold text-[#1f3d2b] shadow-[0_14px_32px_rgba(14,26,22,0.12)] hover:bg-[#f5f5f5] hover:text-[#1f3d2b]"
           href={href}
           rel="noreferrer"
           target="_blank"
           variant="secondary"
         >
+          <MessageCircle className="mr-2 h-4 w-4 text-[#1f3d2b]" />
           Hablar por WhatsApp
         </Button>
       </div>
