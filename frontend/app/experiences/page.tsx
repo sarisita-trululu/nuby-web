@@ -7,7 +7,7 @@ import { getExperiences, getSiteSettings } from "@/lib/public-api";
 import { buildSettingsMap } from "@/lib/utils";
 
 export const metadata = {
-  title: "Experiencias | Nuby Arango Perez",
+  title: "Experiencias | Nuby Arango Pérez",
 };
 
 export default async function ExperiencesPage() {
@@ -24,8 +24,8 @@ export default async function ExperiencesPage() {
         <Reveal>
           <SectionHeading
             eyebrow="Experiencias"
-            title="Una pausa viva en la montana"
-            description="Encuentros para respirar, sentir el cuerpo con mas presencia y reconectar contigo en medio de la naturaleza."
+            title="Una pausa viva en la montaña"
+            description="Encuentros para respirar, sentir el cuerpo con más presencia y reconectar contigo en medio de la naturaleza."
           />
         </Reveal>
         <div className="mt-10">

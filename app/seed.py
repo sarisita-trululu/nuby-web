@@ -12,26 +12,26 @@ from app.models.user import User
 DEFAULT_SERVICES = [
     {
         "title": "Terapia online",
-        "description": "Atencion psicologica virtual, segura y confidencial.",
+        "description": "Atención psicológica virtual, segura y confidencial.",
         "items": [
             "Sesiones virtuales personalizadas",
             "Acompañamiento flexible desde cualquier lugar",
-            "Proceso terapeutico seguro y confidencial",
+            "Proceso terapéutico seguro y confidencial",
         ],
         "icon": "video",
     },
     {
         "title": "Terapia individual",
         "description": (
-            "Acompanamiento clinico para trabajar estres y ansiedad, depresion, duelos y perdidas, "
-            "autoconocimiento, gestion emocional y desarrollo personal."
+            "Acompañamiento clínico para trabajar estrés y ansiedad, depresión, duelos y pérdidas, "
+            "autoconocimiento, gestión emocional y desarrollo personal."
         ),
         "items": [
-            "Estres y ansiedad",
-            "Depresion",
-            "Duelos y perdidas",
+            "Estrés y ansiedad",
+            "Depresión",
+            "Duelos y pérdidas",
             "Autoconocimiento",
-            "Gestion emocional",
+            "Gestión emocional",
             "Desarrollo personal",
         ],
         "icon": "user",
@@ -39,23 +39,23 @@ DEFAULT_SERVICES = [
     {
         "title": "Terapia de pareja",
         "description": (
-            "Espacio terapeutico para fortalecer la comunicacion, reconstruir acuerdos y recuperar la confianza."
+            "Espacio terapéutico para fortalecer la comunicación, reconstruir acuerdos y recuperar la confianza."
         ),
         "items": [
-            "Comunicacion asertiva",
-            "Reestructuracion de acuerdos",
-            "Construccion de proyectos conjuntos",
-            "Recuperacion de confianza",
+            "Comunicación asertiva",
+            "Reestructuración de acuerdos",
+            "Construcción de proyectos conjuntos",
+            "Recuperación de confianza",
         ],
         "icon": "heart",
     },
     {
-        "title": "Formacion y capacitacion",
+        "title": "Formación y capacitación",
         "description": "Programas formativos para equipos y organizaciones enfocados en el desarrollo humano.",
         "items": [
             "Inteligencia emocional en el trabajo",
-            "Resolucion de conflictos",
-            "Comunicacion organizacional",
+            "Resolución de conflictos",
+            "Comunicación organizacional",
             "Liderazgo humanizado",
             "Bienestar y autocuidado laboral",
         ],
@@ -65,17 +65,17 @@ DEFAULT_SERVICES = [
         "title": "Cultura organizacional y clima laboral",
         "description": "Procesos para diagnosticar, fortalecer y transformar la experiencia de los equipos.",
         "items": [
-            "Diagnostico de clima laboral",
-            "Integracion de equipos",
+            "Diagnóstico de clima laboral",
+            "Integración de equipos",
             "Sentido de pertenencia",
         ],
         "icon": "building",
     },
     {
         "title": "Bienestar laboral y salud mental en empresas",
-        "description": "Estrategias para promover salud mental, prevencion e intervencion psicosocial en organizaciones.",
+        "description": "Estrategias para promover salud mental, prevención e intervención psicosocial en organizaciones.",
         "items": [
-            "Evaluacion de riesgos psicosociales",
+            "Evaluación de riesgos psicosociales",
             "Programas de bienestar emocional",
             "Intervenciones de apoyo",
         ],
@@ -83,11 +83,11 @@ DEFAULT_SERVICES = [
     },
     {
         "title": "Acompañamiento preventivo y de bienestar",
-        "description": "Acciones preventivas para fortalecer habitos saludables y reducir factores de riesgo emocional.",
+        "description": "Acciones preventivas para fortalecer hábitos saludables y reducir factores de riesgo emocional.",
         "items": [
             "Estilos de vida sanos",
-            "Manejo del estres",
-            "Prevencion de problematicas emocionales",
+            "Manejo del estrés",
+            "Prevención de problemáticas emocionales",
         ],
         "icon": "leaf",
     },
@@ -141,11 +141,11 @@ def upsert_services(db) -> str:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Seed inicial para el backend de Nuby Arango Perez.")
-    parser.add_argument("--admin-name", default=os.getenv("ADMIN_NAME", "Nuby Arango Perez"))
+    parser = argparse.ArgumentParser(description="Seed inicial para el backend de Nuby Arango Pérez.")
+    parser.add_argument("--admin-name", default=os.getenv("ADMIN_NAME", "Nuby Arango Pérez"))
     parser.add_argument("--admin-email", default=os.getenv("ADMIN_EMAIL"))
     parser.add_argument("--admin-password", default=os.getenv("ADMIN_PASSWORD"))
-    parser.add_argument("--skip-admin", action="store_true", help="Omite la creacion o actualizacion del admin.")
+    parser.add_argument("--skip-admin", action="store_true", help="Omite la creación o actualización del admin.")
     args = parser.parse_args()
 
     if not args.skip_admin and (not args.admin_email or not args.admin_password):

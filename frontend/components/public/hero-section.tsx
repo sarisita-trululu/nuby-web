@@ -20,7 +20,7 @@ export function HeroSection({ settings }: HeroSectionProps) {
     <section className="relative isolate overflow-hidden scroll-mt-24" id="inicio">
       <motion.div className="absolute inset-0" style={{ y: backgroundY }}>
         <Image
-          alt="Montanas con niebla"
+          alt="Montañas con niebla"
           className="h-full w-full object-cover"
           fill
           priority
@@ -40,7 +40,7 @@ export function HeroSection({ settings }: HeroSectionProps) {
             transition={{ duration: 0.7 }}
             className="mb-4 text-xs font-semibold uppercase tracking-[0.4em] text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.28)]"
           >
-            Psicologia clinica | Organizacional | PsicoSendero
+            Psicología clínica | Organizacional | PsicoSendero
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 28 }}
@@ -79,7 +79,7 @@ export function HeroSection({ settings }: HeroSectionProps) {
               href="/#psicosendero"
               variant="secondary"
             >
-              Ver experiencia en la montana
+              Ver experiencia en la montaña
             </Button>
           </motion.div>
         </div>

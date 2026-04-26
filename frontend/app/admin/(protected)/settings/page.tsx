@@ -33,53 +33,53 @@ const SETTING_SECTIONS: Array<{
   {
     title: "Inicio",
     description:
-      "Edita lo primero que las personas leen cuando entran a la pagina principal.",
+      "Edita lo primero que las personas leen cuando entran a la página principal.",
     fields: [
       {
         key: "hero_title",
-        label: "Titulo principal",
-        placeholder: "Ej: Nuby Arango Perez",
+        label: "Título principal",
+        placeholder: "Ej: Nuby Arango Pérez",
       },
       {
         key: "hero_subtitle",
-        label: "Subtitulo principal",
-        placeholder: "Ej: Psicologia con sentido humano para la vida y el trabajo.",
+        label: "Subtítulo principal",
+        placeholder: "Ej: Psicología con sentido humano para la vida y el trabajo.",
       },
     ],
   },
   {
     title: "Sobre Nuby",
     description:
-      "Este bloque cuenta quien es Nuby y como acompana a las personas y equipos.",
+      "Este bloque cuenta quién es Nuby y cómo acompaña a las personas y equipos.",
     fields: [
       {
         key: "about_title",
-        label: "Titulo de la seccion",
-        placeholder: "Ej: Psicologia con sentido humano",
+        label: "Título de la sección",
+        placeholder: "Ej: Psicología con sentido humano",
       },
       {
         key: "about_text",
         label: "Texto sobre Nuby",
         placeholder:
-          "Describe el perfil profesional y el enfoque de acompanamiento.",
+          "Describe el perfil profesional y el enfoque de acompañamiento.",
         type: "textarea",
       },
       {
         key: "about_support_label",
-        label: "Etiqueta pequena",
+        label: "Etiqueta pequeña",
         placeholder: "Ej: Para la vida y el trabajo",
       },
       {
         key: "about_support_items",
-        label: "Linea de apoyo",
-        placeholder: "Ej: Clinica | Organizacional | Bienestar",
+        label: "Línea de apoyo",
+        placeholder: "Ej: Clínica | Organizacional | Bienestar",
       },
     ],
   },
   {
     title: "Frase destacada",
     description:
-      "Ajusta la franja emocional que aparece en la mitad de la pagina.",
+      "Ajusta la franja emocional que aparece en la mitad de la página.",
     fields: [
       {
         key: "emotional_quote",
@@ -89,7 +89,7 @@ const SETTING_SECTIONS: Array<{
       },
       {
         key: "emotional_cta_label",
-        label: "Texto del boton",
+        label: "Texto del botón",
         placeholder: "Ej: Iniciar proceso",
       },
     ],
@@ -97,7 +97,7 @@ const SETTING_SECTIONS: Array<{
   {
     title: "Contacto",
     description:
-      "Estos datos aparecen en la seccion de contacto y ayudan a que te escriban facilmente.",
+      "Estos datos aparecen en la sección de contacto y ayudan a que te escriban fácilmente.",
     fields: [
       {
         key: "contact_phone",
@@ -116,7 +116,7 @@ const SETTING_SECTIONS: Array<{
       },
       {
         key: "footer_phrase",
-        label: "Frase del pie de pagina",
+        label: "Frase del pie de página",
         placeholder: "Escribe una frase breve para el cierre del sitio.",
       },
     ],
@@ -124,8 +124,8 @@ const SETTING_SECTIONS: Array<{
 ];
 
 const EXTRA_FALLBACK_VALUES: Record<string, string> = {
-  hero_title: "Nuby Arango Perez",
-  hero_subtitle: "Psicologia con sentido humano para la vida y el trabajo.",
+  hero_title: "Nuby Arango Pérez",
+  hero_subtitle: "Psicología con sentido humano para la vida y el trabajo.",
 };
 
 const SETTING_FIELDS = SETTING_SECTIONS.flatMap((section) => section.fields);
@@ -171,7 +171,7 @@ export default function AdminSettingsPage() {
       const data = await listSiteSettings(token);
       setItems(data);
     } catch {
-      setError("No fue posible cargar la configuracion.");
+      setError("No fue posible cargar la configuración.");
     } finally {
       setLoading(false);
     }
@@ -217,7 +217,7 @@ export default function AdminSettingsPage() {
       }
 
       await refresh();
-      setSuccess("Los textos de la pagina se guardaron correctamente.");
+      setSuccess("Los textos de la página se guardaron correctamente.");
     } catch {
       setError("No fue posible guardar los cambios de esta seccion.");
     }
@@ -226,9 +226,9 @@ export default function AdminSettingsPage() {
   return (
     <div className="space-y-8">
       <AdminPageHeader
-        eyebrow="Configuracion"
-        title="Textos y datos de la pagina"
-        description="Edita los mensajes principales del sitio, la informacion de contacto y los textos visibles sin tocar codigo."
+        eyebrow="Configuración"
+        title="Textos y datos de la página"
+        description="Edita los mensajes principales del sitio, la información de contacto y los textos visibles sin tocar código."
       />
 
       <form className="space-y-6" onSubmit={onSubmit}>
@@ -276,7 +276,7 @@ export default function AdminSettingsPage() {
           <div>
             <h2 className="font-serif text-3xl text-pine">Guardar cambios</h2>
             <p className="mt-2 text-sm leading-6 text-pine/70">
-              Cuando guardes, los textos quedaran listos para mostrarse en la pagina publica.
+              Cuando guardes, los textos quedarán listos para mostrarse en la página pública.
             </p>
           </div>
           <Button disabled={isSubmitting || loading} type="submit">

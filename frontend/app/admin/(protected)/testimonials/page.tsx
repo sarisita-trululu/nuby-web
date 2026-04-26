@@ -113,7 +113,7 @@ export default function AdminTestimonialsPage() {
       <AdminPageHeader
         eyebrow="Testimonios"
         title="Voces del proceso"
-        description="Mantiene visibles testimonios reales y seleccionados con cuidado para la experiencia publica."
+        description="Mantiene visibles testimonios reales y seleccionados con cuidado para la experiencia pública."
       />
 
       <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
@@ -148,7 +148,7 @@ export default function AdminTestimonialsPage() {
             />
             <ToggleField
               label="Visible en la web"
-              description="Solo los testimonios visibles aparecen en la pagina publica."
+              description="Solo los testimonios visibles aparecen en la página pública."
               checked={watch("is_visible")}
               onChange={(value) => setValue("is_visible", value, { shouldDirty: true })}
             />
@@ -219,7 +219,7 @@ export default function AdminTestimonialsPage() {
               ))
             ) : (
               <div className="rounded-[1.75rem] border border-forest/10 bg-white/70 p-6 text-sm text-pine/70">
-                Aun no hay testimonios creados.
+                Aún no hay testimonios creados.
               </div>
             )}
           </div>

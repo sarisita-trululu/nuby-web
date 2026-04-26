@@ -18,7 +18,10 @@ router = APIRouter(prefix="/api/admin/blog", tags=["Admin Blog"])
 def get_blog_post_or_404(post_id: int, db: Session) -> BlogPost:
     post = db.get(BlogPost, post_id)
     if post is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Publicacion no encontrada.")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Publicación no encontrada.",
+        )
     return post
 
 

@@ -7,7 +7,7 @@ import { getServices, getSiteSettings } from "@/lib/public-api";
 import { buildSettingsMap } from "@/lib/utils";
 
 export const metadata = {
-  title: "Servicios | Nuby Arango Perez",
+  title: "Servicios | Nuby Arango Pérez",
 };
 
 export default async function ServicesPage() {
@@ -23,8 +23,8 @@ export default async function ServicesPage() {
         <Reveal>
           <SectionHeading
             eyebrow="Servicios"
-            title="Acompanamiento para la vida y el trabajo"
-            description="Cada proceso esta pensado para abrir un espacio de escucha, orientacion y cuidado emocional con profundidad y calidez."
+            title="Acompañamiento para la vida y el trabajo"
+            description="Cada proceso está pensado para abrir un espacio de escucha, orientación y cuidado emocional con profundidad y calidez."
           />
         </Reveal>
         <div className="mt-10">
@@ -38,8 +38,8 @@ export default async function ServicesPage() {
             </div>
           ) : (
             <EmptyState
-              title="Aun no hay servicios publicados"
-              description="Cuando se publiquen nuevos servicios, los veras aqui con toda su informacion."
+              title="Aún no hay servicios publicados"
+              description="Cuando se publiquen nuevos servicios, los verás aquí con toda su información."
             />
           )}
         </div>

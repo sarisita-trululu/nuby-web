@@ -5,13 +5,13 @@ export const DEFAULT_EMAIL = "nubypsicologa@gmail.com";
 export const DEFAULT_INSTAGRAM = "@NubyPsicologa";
 
 export const FALLBACK_SITE_SETTINGS: SiteSettingsMap = {
-  hero_title: "Nuby Arango Perez",
-  hero_subtitle: "Psicologia con sentido humano para la vida y el trabajo.",
-  about_title: "Psicologia con sentido humano",
+  hero_title: "Nuby Arango Pérez",
+  hero_subtitle: "Psicología con sentido humano para la vida y el trabajo.",
+  about_title: "Psicología con sentido humano",
   about_text:
-    "Psicologa clinica y organizacional con enfoque humanista, orientada al acompanamiento emocional y al fortalecimiento del bienestar integral tanto en individuos como en equipos de trabajo.",
+    "Psicóloga clínica y organizacional con enfoque humanista, orientada al acompañamiento emocional y al fortalecimiento del bienestar integral tanto en individuos como en equipos de trabajo.",
   about_support_label: "Para la vida y el trabajo",
-  about_support_items: "Clinica | Organizacional | Bienestar",
+  about_support_items: "Clínica | Organizacional | Bienestar",
   emotional_quote:
     "No se trata solo de hablar de lo que duele, sino de encontrar nuevas formas de habitar tu historia.",
   emotional_cta_label: "Iniciar proceso",
@@ -19,11 +19,11 @@ export const FALLBACK_SITE_SETTINGS: SiteSettingsMap = {
   contact_phone: DEFAULT_WHATSAPP_DISPLAY,
   instagram: DEFAULT_INSTAGRAM,
   footer_phrase:
-    "Psicologia con sentido humano, para la vida y el trabajo.",
+    "Psicología con sentido humano, para la vida y el trabajo.",
 };
 
 export const DEFAULT_CONTACT_MESSAGE =
-  "Hola Nuby, quiero agendar una cita y conocer tus espacios de acompanamiento.";
+  "Hola Nuby, quiero agendar una cita y conocer tus espacios de acompañamiento.";
 
 export const DEFAULT_EXPERIENCE_MESSAGE =
-  "Hola Nuby, quiero participar en una de tus experiencias vivenciales en la montana.";
+  "Hola Nuby, quiero participar en una de tus experiencias vivenciales en la montaña.";

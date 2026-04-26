@@ -1,6 +1,6 @@
-# Frontend Nuby Arango Perez
+# Frontend Nuby Arango Pérez
 
-Frontend en Next.js para la pagina publica y el panel privado de administracion.
+Frontend en Next.js para la página pública y el panel privado de administración.
 
 ## Stack
 
@@ -66,7 +66,7 @@ NEXT_PUBLIC_WHATSAPP_NUMBER=573012799371
 - Todas las llamadas del formulario de contacto, login admin y panel usan `NEXT_PUBLIC_API_URL`.
 - En produccion no se usa `localhost`; si falta `NEXT_PUBLIC_API_URL`, las acciones del backend fallaran hasta configurarla.
 - El panel admin usa JWT y envia `Authorization: Bearer <token>`.
-- La subida de imagenes usa `POST /api/admin/uploads`.
+- La subida de imágenes usa `POST /api/admin/uploads`.
 
 ## Railway
 

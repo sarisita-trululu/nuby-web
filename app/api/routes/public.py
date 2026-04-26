@@ -67,7 +67,7 @@ def list_blog_posts(db: Annotated[Session, Depends(get_db)]) -> list[BlogPost]:
 def get_blog_post(slug: str, db: Annotated[Session, Depends(get_db)]) -> BlogPost:
     post = db.scalar(select(BlogPost).where(BlogPost.slug == slug, BlogPost.is_published.is_(True)))
     if post is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Publicacion no encontrada.")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Publicación no encontrada.")
     return post
 
 

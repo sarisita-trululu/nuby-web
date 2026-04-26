@@ -7,7 +7,7 @@ import { getBlogPosts, getSiteSettings } from "@/lib/public-api";
 import { buildSettingsMap } from "@/lib/utils";
 
 export const metadata = {
-  title: "Blog | Nuby Arango Perez",
+  title: "Blog | Nuby Arango Pérez",
 };
 
 export default async function BlogPage() {
@@ -24,7 +24,7 @@ export default async function BlogPage() {
           <SectionHeading
             eyebrow="Blog"
             title="Reflexiones y recursos para tu bienestar"
-            description="Lecturas pensadas para acompanarte con claridad, calma y herramientas utiles para tu vida cotidiana."
+            description="Lecturas pensadas para acompañarte con claridad, calma y herramientas útiles para tu vida cotidiana."
           />
         </Reveal>
         <div className="mt-10">
@@ -38,8 +38,8 @@ export default async function BlogPage() {
             </div>
           ) : (
             <EmptyState
-              title="Aun no hay publicaciones visibles"
-              description="Cuando Nuby publique nuevos contenidos, apareceran aqui para leerse con calma."
+              title="Aún no hay publicaciones visibles"
+              description="Cuando Nuby publique nuevos contenidos, aparecerán aquí para leerse con calma."
             />
           )}
         </div>

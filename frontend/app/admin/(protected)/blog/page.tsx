@@ -126,11 +126,11 @@ export default function AdminBlogPage() {
       await refresh();
       setSuccessMessage(
         values.is_published
-          ? "La publicacion se guardo y quedo visible en el blog."
-          : "La publicacion se guardo como borrador.",
+          ? "La publicación se guardó y quedó visible en el blog."
+          : "La publicación se guardó como borrador.",
       );
     } catch {
-      setError("No fue posible guardar la publicacion.");
+      setError("No fue posible guardar la publicación.");
     }
   });
 
@@ -139,7 +139,7 @@ export default function AdminBlogPage() {
       <AdminPageHeader
         eyebrow="Blog"
         title="Publicaciones psicoeducativas"
-        description="Escribe nuevas publicaciones para acompanar a las personas con contenido claro, humano y facil de leer."
+        description="Escribe nuevas publicaciones para acompañar a las personas con contenido claro, humano y fácil de leer."
       />
 
       <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
@@ -147,10 +147,10 @@ export default function AdminBlogPage() {
           <div className="flex items-center justify-between gap-4">
             <div>
               <h2 className="font-serif text-3xl text-pine">
-                {selected ? "Editar publicacion" : "Crear nueva publicacion"}
+                {selected ? "Editar publicación" : "Crear nueva publicación"}
               </h2>
               <p className="mt-2 text-sm leading-6 text-pine/65">
-                Completa solo la informacion principal. La direccion interna se organiza automaticamente.
+                Completa solo la información principal. La dirección interna se organiza automáticamente.
               </p>
             </div>
             {selected ? (
@@ -163,13 +163,13 @@ export default function AdminBlogPage() {
           <form className="mt-6 space-y-4" onSubmit={onSubmit}>
             <div className="grid gap-4 md:grid-cols-2">
               <InputField
-                label="Titulo"
+                label="Título"
                 placeholder="Ej: Cuando el cansancio emocional pide una pausa"
                 error={errors.title?.message}
                 {...register("title", { required: "Este campo es obligatorio." })}
               />
               <InputField
-                label="Categoria"
+                label="Categoría"
                 placeholder="Ej: Bienestar emocional"
                 error={errors.category?.message}
                 {...register("category", {
@@ -180,7 +180,7 @@ export default function AdminBlogPage() {
 
             <InputField
               label="Imagen de portada"
-              placeholder="Se llena automaticamente si subes una imagen."
+              placeholder="Se llena automáticamente si subes una imagen."
               {...register("cover_image")}
             />
 
@@ -208,7 +208,7 @@ export default function AdminBlogPage() {
 
             <TextareaField
               label="Resumen breve"
-              placeholder="Escribe un resumen corto para invitar a leer la publicacion."
+              placeholder="Escribe un resumen corto para invitar a leer la publicación."
               error={errors.excerpt?.message}
               {...register("excerpt", { required: "Este campo es obligatorio." })}
             />
@@ -217,20 +217,20 @@ export default function AdminBlogPage() {
               label="Contenido"
               className="min-h-[260px]"
               hint="Puedes escribir por parrafos dejando lineas en blanco entre ideas."
-              placeholder="Desarrolla aqui el contenido principal del articulo."
+              placeholder="Desarrolla aquí el contenido principal del artículo."
               error={errors.content?.message}
               {...register("content", {
                 required: "Este campo es obligatorio.",
                 minLength: {
                   value: 30,
-                  message: "Escribe un contenido mas amplio.",
+                  message: "Escribe un contenido más amplio.",
                 },
               })}
             />
 
             <ToggleField
               label="Publicar ahora"
-              description="Si esta activo, la publicacion aparece en el blog publico."
+              description="Si está activo, la publicación aparece en el blog público."
               checked={watch("is_published")}
               onChange={(value) =>
                 setValue("is_published", value, { shouldDirty: true })
@@ -254,7 +254,7 @@ export default function AdminBlogPage() {
                 ? "Guardando..."
                 : selected
                   ? "Guardar cambios"
-                  : "Crear publicacion"}
+                  : "Crear publicación"}
             </Button>
           </form>
         </section>
@@ -296,7 +296,7 @@ export default function AdminBlogPage() {
                     </Button>
                     <Button
                       onClick={async () => {
-                        if (!token || !window.confirm("Eliminar esta publicacion?")) {
+                        if (!token || !window.confirm("Eliminar esta publicación?")) {
                           return;
                         }
                         await deleteBlogPost(token, item.id);
@@ -316,7 +316,7 @@ export default function AdminBlogPage() {
               ))
             ) : (
               <div className="rounded-[1.75rem] border border-forest/10 bg-white/70 p-6 text-sm text-pine/70">
-                Aun no hay publicaciones creadas.
+                Aún no hay publicaciones creadas.
               </div>
             )}
           </div>

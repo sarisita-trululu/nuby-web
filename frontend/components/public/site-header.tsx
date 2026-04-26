@@ -39,10 +39,10 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
           </span>
           <span>
             <span className="block font-serif text-2xl leading-none">
-              Nuby Arango Perez
+              Nuby Arango Pérez
             </span>
             <span className="text-xs uppercase tracking-[0.3em] text-forest/60">
-              Psicologia con sentido humano
+              Psicología con sentido humano
             </span>
           </span>
         </Link>

@@ -13,7 +13,7 @@ import { getSiteSettings } from "@/lib/public-api";
 import { buildSettingsMap } from "@/lib/utils";
 
 export const metadata = {
-  title: "Contacto | Nuby Arango Perez",
+  title: "Contacto | Nuby Arango Pérez",
 };
 
 export default async function ContactPage() {
@@ -28,8 +28,8 @@ export default async function ContactPage() {
             <div className="soft-panel h-full p-8 md:p-10">
               <SectionHeading
                 eyebrow="Contacto"
-                title="Estoy aqui para escucharte"
-                description="Si deseas iniciar un proceso terapeutico o hablar sobre bienestar emocional en tu equipo, conversemos."
+                title="Estoy aquí para escucharte"
+                description="Si deseas iniciar un proceso terapéutico o hablar sobre bienestar emocional en tu equipo, conversemos."
               />
               <div className="mt-8 space-y-5 text-sm text-pine/80">
                 <div className="flex items-center gap-3">

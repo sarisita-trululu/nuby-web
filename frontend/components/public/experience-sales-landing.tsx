@@ -468,11 +468,8 @@ export function ExperienceSalesLanding({
               <h2 className="mt-4 font-serif text-4xl text-pine md:text-5xl">
                 Psicología clínica, psicología organizacional y experiencias vivenciales
               </h2>
-              <p className="mt-6 text-base leading-8 text-pine/72">
-                Esta experiencia no reemplaza los procesos terapéuticos ni el
-                trabajo organizacional. Es una línea propia de acompañamiento,
-                creada para abrir un espacio de bienestar, reflexión y conexión
-                emocional desde la naturaleza.
+              <p className="mt-6 whitespace-pre-line text-base leading-8 text-pine/72">
+                {"PsicoSendero es una propuesta de bienestar que integra la psicología y la experiencia en la naturaleza, ofreciendo espacios de acompañamiento psicoemocional a través de metodologías experienciales.\n\nSu propósito es promover el autoconocimiento, la regulación emocional y el bienestar integral en entornos naturales."}
               </p>
               <div className="mt-8 grid gap-4 sm:grid-cols-2">
                 {[

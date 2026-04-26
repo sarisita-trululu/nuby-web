@@ -135,7 +135,7 @@ export default function AdminServicesPage() {
       <AdminPageHeader
         eyebrow="Servicios"
         title="Servicios visibles"
-        description="Actualiza la oferta de acompanamiento clinico y organizacional con un formulario claro y facil de usar."
+        description="Actualiza la oferta de acompañamiento clínico y organizacional con un formulario claro y fácil de usar."
       />
 
       <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
@@ -146,7 +146,7 @@ export default function AdminServicesPage() {
                 {selected ? "Editar servicio" : "Crear servicio"}
               </h2>
               <p className="mt-2 text-sm leading-6 text-pine/65">
-                Edita el nombre, la descripcion y los temas clave. El resto se organiza automaticamente.
+                Edita el nombre, la descripción y los temas clave. El resto se organiza automáticamente.
               </p>
             </div>
             {selected ? (
@@ -165,8 +165,8 @@ export default function AdminServicesPage() {
             />
 
             <TextareaField
-              label="Descripcion"
-              placeholder="Describe de forma clara en que consiste este servicio."
+              label="Descripción"
+              placeholder="Describe de forma clara en qué consiste este servicio."
               error={errors.description?.message}
               {...register("description", {
                 required: "Este campo es obligatorio.",
@@ -176,7 +176,7 @@ export default function AdminServicesPage() {
             <TextareaField
               label="Temas o puntos que incluye"
               hint="Escribe un punto por linea."
-              placeholder="Ej: Manejo del estres"
+              placeholder="Ej: Manejo del estrés"
               error={errors.items_text?.message}
               {...register("items_text", {
                 required: "Agrega al menos un tema.",
@@ -185,7 +185,7 @@ export default function AdminServicesPage() {
 
             <ToggleField
               label="Mostrar este servicio"
-              description="Si lo desactivas, deja de verse en la pagina publica."
+              description="Si lo desactivas, deja de verse en la página pública."
               checked={watch("is_active")}
               onChange={(value) =>
                 setValue("is_active", value, { shouldDirty: true })
@@ -271,7 +271,7 @@ export default function AdminServicesPage() {
               ))
             ) : (
               <div className="rounded-[1.75rem] border border-forest/10 bg-white/70 p-6 text-sm text-pine/70">
-                Aun no hay servicios cargados.
+                Aún no hay servicios cargados.
               </div>
             )}
           </div>

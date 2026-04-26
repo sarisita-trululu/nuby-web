@@ -67,7 +67,7 @@ export function HomeView({
               <div className="absolute inset-0 translate-x-6 translate-y-6 rounded-[38%_62%_53%_47%/40%_42%_58%_60%] bg-moss/35 blur-2xl" />
               <div className="soft-panel relative overflow-hidden rounded-[38%_62%_53%_47%/40%_42%_58%_60%] p-4">
                 <Image
-                  alt="Retrato profesional de Nuby Arango Perez"
+                  alt="Retrato profesional de Nuby Arango Pérez"
                   className="h-auto w-full rounded-[32%_68%_54%_46%/42%_38%_62%_58%]"
                   height={720}
                   src="/nuby-portrait.jpg"
@@ -105,7 +105,7 @@ export function HomeView({
         <Reveal>
           <SectionHeading
             eyebrow="Servicios"
-            title="Acompanamiento terapeutico y organizacional"
+            title="Acompañamiento terapéutico y organizacional"
             description="Espacios creados para cuidar tu salud emocional, fortalecer tus relaciones y construir bienestar sostenible."
           />
         </Reveal>
@@ -123,7 +123,7 @@ export function HomeView({
           <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
             <div className="max-w-3xl">
               <p className="text-xs uppercase tracking-[0.32em] text-white/55">
-                Presencia y contencion
+                Presencia y contención
               </p>
               <h2 className="mt-4 font-serif text-4xl leading-tight md:text-5xl">
                 {settings.emotional_quote ?? FALLBACK_SITE_SETTINGS.emotional_quote}
@@ -146,7 +146,7 @@ export function HomeView({
           <SectionHeading
             eyebrow="Blog"
             title="Contenido para tu bienestar"
-            description="Reflexiones, herramientas y recursos psicoeducativos para acompanarte dentro y fuera de la consulta."
+            description="Reflexiones, herramientas y recursos psicoeducativos para acompañarte dentro y fuera de la consulta."
           />
         </Reveal>
         <div className="mt-10">
@@ -160,8 +160,8 @@ export function HomeView({
             </div>
           ) : (
             <EmptyState
-              title="Aun no hay publicaciones visibles"
-              description="Muy pronto encontraras articulos pensados para ayudarte a comprender mejor tu proceso y tu bienestar."
+              title="Aún no hay publicaciones visibles"
+              description="Muy pronto encontrarás artículos pensados para ayudarte a comprender mejor tu proceso y tu bienestar."
             />
           )}
         </div>
@@ -172,7 +172,7 @@ export function HomeView({
           <SectionHeading
             eyebrow="Testimonios"
             title="Voces que hablan de procesos con calma y confianza"
-            description="Cada historia refleja una experiencia distinta de acompanamiento, escucha y transformacion."
+            description="Cada historia refleja una experiencia distinta de acompañamiento, escucha y transformación."
           />
         </Reveal>
         <div className="mt-10">
@@ -180,8 +180,8 @@ export function HomeView({
             <TestimonialStrip testimonials={testimonials.slice(0, 6)} />
           ) : (
             <EmptyState
-              title="Los testimonios apareceran aqui"
-              description="Cuando Nuby publique nuevas historias de acompanamiento, este espacio se llenara con voces reales y cercanas."
+              title="Los testimonios aparecerán aquí"
+              description="Cuando Nuby publique nuevas historias de acompañamiento, este espacio se llenará con voces reales y cercanas."
             />
           )}
         </div>
@@ -198,9 +198,9 @@ export function HomeView({
         <section className="page-section pt-0">
           <Reveal>
             <SectionHeading
-              eyebrow="Mas experiencias"
+              eyebrow="Más experiencias"
               title="Otros encuentros de PsicoSendero"
-              description="Si Nuby abre nuevas fechas, apareceran aqui sin sacar al usuario de la pagina principal."
+              description="Si Nuby abre nuevas fechas, aparecerán aquí sin sacar al usuario de la página principal."
             />
           </Reveal>
           <div className="mt-10 grid gap-6 lg:grid-cols-2">
@@ -241,8 +241,8 @@ export function HomeView({
                   Presencia
                 </p>
                 <p className="mt-3 text-sm leading-7 text-pine/75">
-                  Un espacio emocionalmente calido, pensado para que puedas
-                  detenerte, respirar y sentirte acompanada con respeto.
+                  Un espacio emocionalmente cálido, pensado para que puedas
+                  detenerte, respirar y sentirte acompañada con respeto.
                 </p>
               </div>
             </div>

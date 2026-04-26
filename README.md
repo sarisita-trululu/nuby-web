@@ -1,6 +1,6 @@
-# Web profesional Nuby Arango Perez
+# Web profesional Nuby Arango Pérez
 
-Repositorio full stack para la pagina publica y el panel privado de Nuby Arango Perez.
+Repositorio full stack para la página pública y el panel privado de Nuby Arango Pérez.
 
 ## Estructura
 
@@ -188,7 +188,7 @@ Verifica:
 - login admin funciona
 - crear experiencia funciona
 - subir imagen funciona
-- las imagenes de `/uploads` son accesibles
+- las imágenes de `/uploads` son accesibles
 - formulario de contacto llega al panel
 
 ## Notas importantes
@@ -196,4 +196,4 @@ Verifica:
 - Cambia las credenciales iniciales del admin antes de produccion.
 - Si vas a usar uploads en produccion, no dejes `UPLOAD_DIR=uploads`; usa un volumen.
 - El frontend y el backend pueden desplegarse desde el mismo repositorio sin cambiar rutas publicas.
-- El panel admin sigue protegido; la pagina publica no requiere login.
+- El panel admin sigue protegido; la página pública no requiere login.

@@ -45,7 +45,7 @@ const adminLinks = [
   },
   {
     href: "/admin/configuracion",
-    label: "Textos de la pagina",
+    label: "Textos de la página",
     icon: TextCursorInput,
     matches: ["/admin/configuracion", "/admin/settings"],
   },
@@ -78,11 +78,11 @@ export function AdminShell({ children }: AdminShellProps) {
         <aside className="hidden min-h-screen flex-col border-r border-forest/10 bg-pine px-6 py-8 text-white lg:flex">
           <div>
             <p className="text-xs uppercase tracking-[0.35em] text-white/45">
-              Nuby Arango Perez
+              Nuby Arango Pérez
             </p>
             <h1 className="mt-4 font-serif text-4xl">Panel privado</h1>
             <p className="mt-3 text-sm leading-6 text-white/65">
-              Gestiona el contenido del sitio con una interfaz calida y ordenada.
+              Gestiona el contenido del sitio con una interfaz cálida y ordenada.
             </p>
           </div>
 
@@ -113,12 +113,12 @@ export function AdminShell({ children }: AdminShellProps) {
               onClick={logout}
             >
               <LogOut className="h-4 w-4" />
-              Cerrar sesion
+              Cerrar sesión
             </button>
 
             <div className="rounded-[1.75rem] border border-white/12 bg-white/10 px-5 py-6 text-center shadow-[0_18px_45px_rgba(6,24,20,0.18)] backdrop-blur-sm">
               <p className="font-serif text-lg leading-relaxed text-white/95">
-                tia te amo, eres una tesa
+                tía te amo, eres una tesa
               </p>
             </div>
           </div>
@@ -132,12 +132,12 @@ export function AdminShell({ children }: AdminShellProps) {
                   Privado
                 </p>
                 <p className="text-sm text-pine/75">
-                  {user?.name ?? "Administracion de contenido"}
+                  {user?.name ?? "Administración de contenido"}
                 </p>
               </div>
               <div className="flex items-center gap-3">
                 <Button className="hidden sm:inline-flex" onClick={logout} type="button" variant="secondary">
-                  Cerrar sesion
+                  Cerrar sesión
                 </Button>
                 <button
                   className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-forest/15 bg-white/80 text-forest lg:hidden"
@@ -170,7 +170,7 @@ export function AdminShell({ children }: AdminShellProps) {
                 })}
                 <div className="mt-2 rounded-[1.6rem] border border-forest/10 bg-forest/5 px-4 py-5 text-center shadow-[0_16px_35px_rgba(31,61,53,0.08)]">
                   <p className="font-serif text-base leading-relaxed text-pine">
-                    tia te amo, eres una tesa
+                    tía te amo, eres una tesa
                   </p>
                 </div>
               </div>

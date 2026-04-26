@@ -8,10 +8,10 @@ export default function NotFound() {
           No encontrado
         </p>
         <h1 className="mt-4 font-serif text-5xl text-pine">
-          Esta pagina no aparece en el camino
+          Esta página no aparece en el camino
         </h1>
         <p className="mt-4 text-base leading-7 text-pine/70">
-          Puede que el contenido ya no este publicado o que la ruta haya cambiado.
+          Puede que el contenido ya no esté publicado o que la ruta haya cambiado.
         </p>
         <div className="mt-8 flex justify-center">
           <Button href="/">Volver al inicio</Button>

@@ -171,7 +171,7 @@ function buildFormValuesFromExperience(experience: Experience): ExperienceFormVa
 
 function buildWhatsappMessage(title: string, location: string, date: string) {
   const formattedDate = date ? formatDateLong(date) : "la fecha indicada";
-  return `Hola, quiero informacion sobre el encuentro ${title.trim()} en ${location.trim()} del ${formattedDate}`;
+  return `Hola, quiero información sobre el encuentro ${title.trim()} en ${location.trim()} del ${formattedDate}`;
 }
 
 function SectionList({
@@ -254,7 +254,7 @@ function SectionList({
         ))
       ) : (
         <div className="rounded-[1.75rem] border border-forest/10 bg-white/70 p-6 text-sm leading-6 text-pine/70">
-          Todavia no hay experiencias en esta seccion.
+          Todavía no hay experiencias en esta sección.
         </div>
       )}
     </div>
@@ -316,13 +316,13 @@ export default function AdminExperiencesPage() {
   const autoSectionLabel = watchedDate
     ? isDateInPast(watchedDate)
       ? "Memorias del camino"
-      : "Proximos encuentros"
-    : "Proximos encuentros";
+      : "Próximos encuentros"
+    : "Próximos encuentros";
 
   const autoWhatsappMessage =
     watchedTitle.trim() && watchedLocation.trim() && watchedDate
       ? buildWhatsappMessage(watchedTitle, watchedLocation, watchedDate)
-      : "Se creara automaticamente cuando completes titulo, lugar y fecha.";
+      : "Se creará automáticamente cuando completes título, lugar y fecha.";
 
   async function refresh() {
     if (!token) {
@@ -434,8 +434,8 @@ export default function AdminExperiencesPage() {
       await refresh();
       setSuccessMessage(
         values.is_published
-          ? "Tu experiencia se publico correctamente."
-          : "Tu experiencia se guardo como borrador.",
+          ? "Tu experiencia se publicó correctamente."
+          : "Tu experiencia se guardó como borrador.",
       );
     } catch {
       setError("No fue posible guardar la experiencia.");
@@ -453,11 +453,11 @@ export default function AdminExperiencesPage() {
       <div className="flex flex-col gap-4 rounded-[2rem] border border-forest/10 bg-white/75 p-5 shadow-card md:flex-row md:items-center md:justify-between">
         <div className="max-w-2xl">
           <p className="text-sm font-semibold text-pine">
-            Nuby solo completa la informacion principal.
+            Nuby solo completa la información principal.
           </p>
           <p className="mt-2 text-sm leading-6 text-pine/68">
-            La URL interna, el mensaje de reserva, la seleccion de hasta 6 fotos y la
-            organizacion por fecha se resuelven automaticamente.
+            La URL interna, el mensaje de reserva, la selección de hasta 6 fotos y la
+            organización por fecha se resuelven automáticamente.
           </p>
         </div>
         <Button className="min-h-14 px-7 text-base" onClick={startCreating} type="button">
@@ -475,7 +475,7 @@ export default function AdminExperiencesPage() {
               </h2>
               <p className="mt-2 text-sm leading-6 text-pine/65">
                 Completa solo los datos esenciales del encuentro. Nosotros dejamos la
-                estructura lista por detras.
+                estructura lista por detrás.
               </p>
             </div>
             {selected ? (
@@ -492,14 +492,14 @@ export default function AdminExperiencesPage() {
               </span>
               <div className="space-y-2">
                 <p>
-                  Esta experiencia se ubicara en <strong>{autoSectionLabel}</strong>.
+                  Esta experiencia se ubicará en <strong>{autoSectionLabel}</strong>.
                 </p>
                 <p>
-                  La galeria principal usara hasta <strong>6 fotos</strong>: las primeras 2
-                  se veran grandes y las siguientes 4 como apoyo.
+                  La galería principal usará hasta <strong>6 fotos</strong>: las primeras 2
+                  se verán grandes y las siguientes 4 como apoyo.
                 </p>
                 <p>
-                  El boton de reserva dira automaticamente:{" "}
+                  El botón de reserva dirá automáticamente:{" "}
                   <span className="text-pine">{autoWhatsappMessage}</span>
                 </p>
               </div>
@@ -509,8 +509,8 @@ export default function AdminExperiencesPage() {
           <form className="mt-6 space-y-5" onSubmit={onSubmit}>
             <div className="grid gap-4 md:grid-cols-2">
               <InputField
-                label="Titulo del encuentro"
-                placeholder="Ej: El lugar donde todo empezo"
+                label="Título del encuentro"
+                placeholder="Ej: El lugar donde todo empezó"
                 error={errors.title?.message}
                 {...register("title", { required: "Este campo es obligatorio." })}
               />
@@ -525,7 +525,7 @@ export default function AdminExperiencesPage() {
             <div className="grid gap-4 md:grid-cols-2">
               <InputField
                 label="Lugar"
-                placeholder="Ej: Laguna la Colorada, Boyaca"
+                placeholder="Ej: Laguna la Colorada, Boyacá"
                 error={errors.location?.message}
                 {...register("location", { required: "Este campo es obligatorio." })}
               />
@@ -543,17 +543,17 @@ export default function AdminExperiencesPage() {
                 {...register("status")}
               >
                 <option value="cupos_abiertos">Cupos abiertos</option>
-                <option value="proximamente">Proximamente</option>
+                <option value="proximamente">Próximamente</option>
                 <option value="finalizada">Finalizada</option>
               </select>
               <span className="text-xs text-pine/55">
-                Si la fecha ya paso, el sistema la movera automaticamente a memorias del
+                Si la fecha ya pasó, el sistema la moverá automáticamente a memorias del
                 camino.
               </span>
             </label>
 
             <TextareaField
-              label="Descripcion"
+              label="Descripción"
               placeholder="Describe la experiencia con un tono humano, cercano y claro."
               error={errors.description?.message}
               {...register("description", { required: "Este campo es obligatorio." })}
@@ -564,7 +564,7 @@ export default function AdminExperiencesPage() {
                 <div>
                   <p className="text-sm font-medium text-pine">Incluye</p>
                   <p className="text-xs text-pine/55">
-                    Puedes dejar la lista base o cambiarla segun el encuentro.
+                    Puedes dejar la lista base o cambiarla según el encuentro.
                   </p>
                 </div>
                 <Button
@@ -625,8 +625,8 @@ export default function AdminExperiencesPage() {
             {token ? (
               <ImageUploadControl
                 token={token}
-                label="Galeria"
-                helper="Sube varias fotos. La pagina usara automaticamente maximo 6 imagenes para mantener una galeria ordenada."
+                label="Galería"
+                helper="Sube varias fotos. La página usará automáticamente máximo 6 imágenes para mantener una galería ordenada."
                 multiple
                 onUploaded={(urls) => {
                   const currentImages = getValues("gallery_images") ?? [];
@@ -643,10 +643,10 @@ export default function AdminExperiencesPage() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between gap-4">
                   <div>
-                    <p className="text-sm font-medium text-pine">Vista previa de la galeria</p>
+                    <p className="text-sm font-medium text-pine">Vista previa de la galería</p>
                     <p className="text-xs text-pine/55">
-                      Las primeras 2 fotos se destacaran en grande. Las siguientes 4 se
-                      mostraran como apoyo.
+                      Las primeras 2 fotos se destacarán en grande. Las siguientes 4 se
+                      mostrarán como apoyo.
                     </p>
                   </div>
                   <span className="rounded-full bg-forest/8 px-3 py-1 text-xs uppercase tracking-[0.18em] text-forest">
@@ -695,8 +695,8 @@ export default function AdminExperiencesPage() {
             ) : null}
 
             <ToggleField
-              label="Publicar en la pagina"
-              description="Si esta activo, el encuentro podra verse en la web publica."
+              label="Publicar en la página"
+              description="Si está activo, el encuentro podrá verse en la web pública."
               checked={watchedPublished}
               onChange={(value) => setValue("is_published", value, { shouldDirty: true })}
             />
@@ -728,7 +728,7 @@ export default function AdminExperiencesPage() {
             <div>
               <h2 className="font-serif text-3xl text-pine">Listado de experiencias</h2>
               <p className="mt-2 text-sm leading-6 text-pine/65">
-                Desde aqui puedes editar, cambiar fotos o eliminar encuentros ya creados.
+                Desde aquí puedes editar, cambiar fotos o eliminar encuentros ya creados.
               </p>
             </div>
             <Button onClick={startCreating} type="button" variant="secondary">
@@ -750,7 +750,7 @@ export default function AdminExperiencesPage() {
                   onDelete={handleDelete}
                   onEdit={startEditing}
                   selectedId={selected?.id}
-                  title="Proximos encuentros"
+                  title="Próximos encuentros"
                 />
 
                 <SectionList

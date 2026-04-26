@@ -24,10 +24,10 @@ export async function generateMetadata({ params }: ExperienceDetailPageProps) {
   const apiExperience = await getExperienceBySlug(slug).catch(() => null);
   const experience = getExperienceWithFallback(slug, apiExperience);
   if (!experience) {
-    return { title: "Experiencia | Nuby Arango Perez" };
+    return { title: "Experiencia | Nuby Arango Pérez" };
   }
   return {
-    title: `${experience.title} | Nuby Arango Perez`,
+    title: `${experience.title} | Nuby Arango Pérez`,
     description: experience.description,
   };
 }
@@ -103,7 +103,7 @@ export default async function ExperienceDetailPage({
                 </p>
                 <p className="mt-4 text-sm leading-7 text-pine/72">
                   Si esta experiencia resuena contigo, puedes escribir directamente
-                  por WhatsApp para recibir mas informacion.
+                  por WhatsApp para recibir más información.
                 </p>
                 <Button
                   className="mt-6 w-full"
@@ -124,7 +124,7 @@ export default async function ExperienceDetailPage({
                     className="relative h-56 overflow-hidden rounded-[1.75rem]"
                   >
                     <Image
-                      alt={`${experience.title} galeria ${index + 1}`}
+                      alt={`${experience.title} galería ${index + 1}`}
                       className="h-full w-full object-cover"
                       fill
                       sizes="(max-width: 768px) 100vw, 30vw"

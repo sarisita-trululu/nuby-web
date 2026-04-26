@@ -114,16 +114,16 @@ export default function AdminDashboardPage() {
     {
       title: "Servicios",
       description:
-        "Actualiza los servicios que aparecen en la pagina para que la informacion siempre este vigente.",
+        "Actualiza los servicios que aparecen en la página para que la información siempre esté vigente.",
       href: "/admin/servicios",
       cta: "Editar",
       meta: `${services.length} servicios visibles`,
       icon: MessageSquareQuote,
     },
     {
-      title: "Textos de la pagina",
+      title: "Textos de la página",
       description:
-        "Edita titulos, frases, datos de contacto y textos generales sin tocar codigo.",
+        "Edita títulos, frases, datos de contacto y textos generales sin tocar código.",
       href: "/admin/configuracion",
       cta: "Editar",
       meta: `${settings.length} textos configurados`,
@@ -144,8 +144,8 @@ export default function AdminDashboardPage() {
     <div className="space-y-8">
       <AdminPageHeader
         eyebrow="Dashboard"
-        title="Panel de administracion"
-        description="Desde aqui puedes entrar a cada area del sitio y actualizar el contenido con formularios simples."
+        title="Panel de administración"
+        description="Desde aquí puedes entrar a cada área del sitio y actualizar el contenido con formularios simples."
       />
 
       {loading ? (
@@ -224,7 +224,7 @@ export default function AdminDashboardPage() {
         <div>
           <h2 className="font-serif text-3xl text-pine">Acceso rapido</h2>
           <p className="mt-2 text-sm leading-6 text-pine/70">
-            Si hoy necesitas hacer una sola cosa, entra directo a PsicoSendero y crea tu proximo encuentro.
+            Si hoy necesitas hacer una sola cosa, entra directo a PsicoSendero y crea tu próximo encuentro.
           </p>
         </div>
         <Button href="/admin/psicosendero" variant="secondary">

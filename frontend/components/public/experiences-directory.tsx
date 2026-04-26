@@ -64,7 +64,7 @@ export function ExperiencesDirectory({
         </div>
       ) : (
         <EmptyState
-          title="No hay experiencias en esta categoria"
+          title="No hay experiencias en esta categoría"
           description="Pronto habra nuevas fechas para pausar, respirar y reconectar contigo."
         />
       )}

@@ -3,7 +3,7 @@ import { MessageCircleHeart } from "lucide-react";
 import type { SiteSettingsMap } from "@/lib/types";
 import { buildWhatsappLink } from "@/lib/utils";
 
-const PSICOSENDERO_FLOAT_MESSAGE = "Hola, quiero informacion sobre PsicoSendero";
+const PSICOSENDERO_FLOAT_MESSAGE = "Hola, quiero información sobre PsicoSendero";
 
 type WhatsappFloatProps = {
   settings: SiteSettingsMap;

@@ -62,7 +62,7 @@ export function ContactForm({ compact = false }: ContactFormProps) {
             required: "Este campo es obligatorio.",
             pattern: {
               value: /\S+@\S+\.\S+/,
-              message: "Escribe un correo valido.",
+              message: "Escribe un correo válido.",
             },
           })}
         />

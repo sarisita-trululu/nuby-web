@@ -16,7 +16,7 @@ router = APIRouter(prefix="/api/admin/site-settings", tags=["Admin Site Settings
 def get_site_setting_or_404(setting_id: int, db: Session) -> SiteSetting:
     setting = db.get(SiteSetting, setting_id)
     if setting is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Configuracion no encontrada.")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Configuración no encontrada.")
     return setting
 
 
@@ -25,7 +25,7 @@ def validate_setting_key(db: Session, key: str, current_id: int | None = None) -
     if existing is not None and existing.id != current_id:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="Ya existe una configuracion con esa clave.",
+            detail="Ya existe una configuración con esa clave.",
         )
 
 

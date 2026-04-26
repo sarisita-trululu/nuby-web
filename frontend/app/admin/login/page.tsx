@@ -41,7 +41,7 @@ export default function AdminLoginPage() {
       setSession(response.access_token, response.user);
       router.replace(nextPath);
     } catch {
-      setError("Credenciales invalidas o usuario sin acceso.");
+      setError("Credenciales inválidas o usuario sin acceso.");
     }
   });
 
@@ -58,7 +58,7 @@ export default function AdminLoginPage() {
               <Mountain className="h-6 w-6" />
             </span>
             <div>
-              <p className="font-serif text-3xl">Nuby Arango Perez</p>
+              <p className="font-serif text-3xl">Nuby Arango Pérez</p>
               <p className="text-xs uppercase tracking-[0.35em] text-white/55">
                 Panel privado
               </p>
@@ -72,14 +72,14 @@ export default function AdminLoginPage() {
               Un espacio sereno para administrar el sitio
             </h1>
             <p className="mt-6 max-w-md text-base leading-8 text-white/70">
-              Desde aqui puedes editar experiencias, contenidos y mensajes con
+              Desde aquí puedes editar experiencias, contenidos y mensajes con
               una interfaz limpia, humana y segura.
             </p>
           </div>
           <div className="flex items-center gap-3 rounded-[2rem] bg-white/8 p-5">
             <Shield className="h-5 w-5 text-moss" />
             <p className="text-sm text-white/70">
-              Las rutas privadas usan JWT y requieren autenticacion valida.
+              Las rutas privadas usan JWT y requieren autenticación válida.
             </p>
           </div>
         </div>
@@ -95,10 +95,10 @@ export default function AdminLoginPage() {
           </p>
           <h1 className="mt-4 font-serif text-5xl text-pine">Bienvenida</h1>
           <p className="mt-3 text-sm font-medium text-[#1f3d2b] md:text-base">
-            Tia te amo, eres una tesa
+            Tía te amo, eres una tesa
           </p>
           <p className="mt-4 text-sm leading-7 text-pine/70">
-            Inicia sesion para gestionar la web de Nuby con total privacidad.
+            Inicia sesión para gestionar la web de Nuby con total privacidad.
           </p>
 
           <form className="mt-8 space-y-4" onSubmit={onSubmit}>
@@ -110,11 +110,11 @@ export default function AdminLoginPage() {
               {...register("email", { required: "Escribe tu correo." })}
             />
             <InputField
-              label="Contrasena"
-              placeholder="Tu contrasena"
+              label="Contraseña"
+              placeholder="Tu contraseña"
               type="password"
               error={errors.password?.message}
-              {...register("password", { required: "Escribe tu contrasena." })}
+              {...register("password", { required: "Escribe tu contraseña." })}
             />
             {error ? (
               <p className="rounded-2xl bg-red-100 px-4 py-3 text-sm text-red-700">

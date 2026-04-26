@@ -29,7 +29,7 @@ async def lifespan(_: FastAPI):
 
 app = FastAPI(
     title=settings.app_name,
-    description="API para el sitio web y panel privado de Nuby Arango Perez.",
+    description="API para el sitio web y panel privado de Nuby Arango Pérez.",
     version="1.0.0",
     lifespan=lifespan,
 )
@@ -52,7 +52,7 @@ async def validation_exception_handler(_: Request, exc: RequestValidationError) 
     return JSONResponse(
         status_code=422,
         content={
-            "detail": "Los datos enviados no son validos.",
+            "detail": "Los datos enviados no son válidos.",
             "errors": exc.errors(),
         },
     )
@@ -65,7 +65,7 @@ async def unexpected_exception_handler(_: Request, exc: Exception) -> JSONRespon
 
     return JSONResponse(
         status_code=500,
-        content={"detail": "Ocurrio un error interno. Intenta nuevamente mas tarde."},
+        content={"detail": "Ocurrió un error interno. Intenta nuevamente más tarde."},
     )
 
 

@@ -16,9 +16,9 @@ const sans = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Nuby Arango Perez | Psicologia con sentido humano",
+  title: "Nuby Arango Pérez | Psicología con sentido humano",
   description:
-    "Sitio web de Nuby Arango Perez, psicologa clinica y organizacional. Un espacio para reconectar contigo.",
+    "Sitio web de Nuby Arango Pérez, psicóloga clínica y organizacional. Un espacio para reconectar contigo.",
 };
 
 export default function RootLayout({
@@ -28,6 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
+      <head>
+        <meta charSet="UTF-8" />
+      </head>
       <body
         className={`${serif.variable} ${sans.variable} min-h-screen bg-dawn font-sans text-pine antialiased`}
       >

@@ -20,7 +20,7 @@ def login(payload: LoginRequest, db: Annotated[Session, Depends(get_db)]) -> Tok
     if user is None or not verify_password(payload.password, user.password_hash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Correo o contrasena incorrectos.",
+            detail="Correo o contraseña incorrectos.",
         )
 
     if not user.is_active:
