@@ -12,6 +12,9 @@ type HeroSectionProps = {
   settings: SiteSettingsMap;
 };
 
+const ORGANIZATIONAL_ADVISORY_MESSAGE =
+  "Hola, quiero información sobre asesoría organizacional";
+
 export function HeroSection({ settings }: HeroSectionProps) {
   const { scrollY } = useScroll();
   const backgroundY = useTransform(scrollY, [0, 500], [0, -40]);
@@ -80,6 +83,15 @@ export function HeroSection({ settings }: HeroSectionProps) {
               variant="secondary"
             >
               Ver experiencia en la montaña
+            </Button>
+            <Button
+              className="min-h-14 w-full border border-[rgba(31,61,43,0.18)] bg-white text-[#1f3d2b] shadow-[0_16px_40px_rgba(0,0,0,0.16)] hover:bg-[#f5f1e8] hover:text-[#1f3d2b] sm:w-auto"
+              href={buildWhatsappLink(ORGANIZATIONAL_ADVISORY_MESSAGE, settings)}
+              rel="noreferrer"
+              target="_blank"
+              variant="secondary"
+            >
+              Asesoría organizacional
             </Button>
           </motion.div>
         </div>

@@ -63,11 +63,26 @@ export function formatStatus(status: Experience["status"]) {
   return labels[status];
 }
 
-const DEFAULT_WHATSAPP_LINK =
-  "https://wa.me/573012799371?text=Hola%20Nuby,%20quisiera%20recibir%20informaci%C3%B3n%20sobre%20terapia%20cl%C3%ADnica%20y%20asesor%C3%ADa%20organizacional.%20Quedo%20atento(a).%20Muchas%20gracias.";
+const DEFAULT_WHATSAPP_NUMBER = "573012799371";
 
-export function buildWhatsappLink(_message: string, _settings?: SiteSettingsMap) {
-  return DEFAULT_WHATSAPP_LINK;
+function normalizeWhatsappNumber(settings?: SiteSettingsMap) {
+  const rawValue = settings?.contact_phone ?? DEFAULT_WHATSAPP_NUMBER;
+  const digitsOnly = rawValue.replace(/\D/g, "");
+
+  if (!digitsOnly) {
+    return DEFAULT_WHATSAPP_NUMBER;
+  }
+
+  if (digitsOnly.startsWith("57")) {
+    return digitsOnly;
+  }
+
+  return `57${digitsOnly}`;
+}
+
+export function buildWhatsappLink(message: string, settings?: SiteSettingsMap) {
+  const phone = normalizeWhatsappNumber(settings);
+  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 }
 
 export function firstParagraph(content: string) {
