@@ -12,13 +12,13 @@ Frontend en Next.js para la página pública y el panel privado de administraci�
 - Zustand
 - Framer Motion
 
-## Instalacion
+## Instalación
 
 ```bash
 npm install
 ```
 
-## Desarrollo
+## Desarrollo local
 
 ```bash
 npm run dev
@@ -30,58 +30,63 @@ npm run dev
 npm run build
 ```
 
-## Inicio en produccion
+## Producción local
 
 ```bash
 npm run start
 ```
 
-Este proyecto ya esta configurado para Railway con salida `standalone`.
-
 ## Variables de entorno
 
-Copia `.env.example` a `.env.local`:
+### Vercel / producción
 
-```bash
-cp .env.example .env.local
+Usa `frontend/.env.example` como referencia:
+
+```env
+NEXT_PUBLIC_API_URL=https://YOUR-RAILWAY-BACKEND.up.railway.app
+NEXT_PUBLIC_WHATSAPP_NUMBER=573012799371
 ```
 
-Variables necesarias:
+### Desarrollo local
+
+Usa `frontend/.env.local.example` como referencia:
 
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
 NEXT_PUBLIC_WHATSAPP_NUMBER=573012799371
 ```
 
-Produccion en Vercel:
+## Conexión con backend
 
-```env
-NEXT_PUBLIC_API_URL=https://URL_REAL_DEL_BACKEND
-NEXT_PUBLIC_WHATSAPP_NUMBER=573012799371
-```
-
-## Conexion con backend
-
-- El frontend consume el backend FastAPI del mismo repositorio.
+- El frontend consume el backend FastAPI del mismo repositorio, desplegado en Railway.
 - Todas las llamadas del formulario de contacto, login admin y panel usan `NEXT_PUBLIC_API_URL`.
-- En produccion no se usa `localhost`; si falta `NEXT_PUBLIC_API_URL`, las acciones del backend fallaran hasta configurarla.
-- El panel admin usa JWT y envia `Authorization: Bearer <token>`.
+- En producción no se usa `localhost`.
+- El panel admin usa JWT y envía `Authorization: Bearer <token>`.
 - La subida de imágenes usa `POST /api/admin/uploads`.
 
-## Railway
+## Despliegue en Vercel
 
-Para desplegar este frontend dentro de Railway:
+Configura el proyecto así:
 
-- Root Directory: `/frontend`
-- Config as Code: `/frontend/railway.json`
+- Framework Preset: `Next.js`
+- Root Directory: `frontend`
+- Install Command: `npm install`
+- Build Command: `npm run build`
+- Output Directory: dejar vacío
 
-Variable minima:
+Variables necesarias en Vercel:
 
 ```env
-NEXT_PUBLIC_API_URL=https://TU_BACKEND.up.railway.app
+NEXT_PUBLIC_API_URL=https://YOUR-RAILWAY-BACKEND.up.railway.app
 NEXT_PUBLIC_WHATSAPP_NUMBER=573012799371
 ```
+
+## Rutas clave
+
+- Sitio: `/`
+- Admin login: `/admin/login`
+- Dashboard: `/admin/dashboard`
 
 ## Nota
 
-La guia completa del proyecto full stack y del despliegue conjunto esta en el README raiz del repositorio.
+La guía full stack y la configuración del backend en Railway están en el README raíz.

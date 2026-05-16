@@ -96,7 +96,7 @@ export default function AdminDashboardPage() {
     {
       title: "PsicoSendero",
       description:
-        "Crea encuentros, cambia fechas, sube fotos y decide que experiencia aparece publicada.",
+        "Crea encuentros, cambia fechas, sube fotos y decide qué experiencia aparece publicada.",
       href: "/admin/psicosendero",
       cta: "Editar",
       meta: `${experiences.length} experiencias - ${publishedExperiences} publicadas`,
@@ -222,7 +222,7 @@ export default function AdminDashboardPage() {
 
       <div className="soft-panel flex flex-col gap-4 p-6 md:flex-row md:items-center md:justify-between">
         <div>
-          <h2 className="font-serif text-3xl text-pine">Acceso rapido</h2>
+          <h2 className="font-serif text-3xl text-pine">Acceso rápido</h2>
           <p className="mt-2 text-sm leading-6 text-pine/70">
             Si hoy necesitas hacer una sola cosa, entra directo a PsicoSendero y crea tu próximo encuentro.
           </p>

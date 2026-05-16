@@ -18,8 +18,7 @@ export const FALLBACK_SITE_SETTINGS: SiteSettingsMap = {
   contact_email: DEFAULT_EMAIL,
   contact_phone: DEFAULT_WHATSAPP_DISPLAY,
   instagram: DEFAULT_INSTAGRAM,
-  footer_phrase:
-    "Psicología con sentido humano, para la vida y el trabajo.",
+  footer_phrase: "Psicología con sentido humano, para la vida y el trabajo.",
 };
 
 export const DEFAULT_CONTACT_MESSAGE =
