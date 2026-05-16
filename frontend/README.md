@@ -40,10 +40,10 @@ npm run start
 
 ### Vercel / producción
 
-Usa `frontend/.env.example` como referencia:
+Usa [C:\New project\frontend\.env.example](C:\New project\frontend\.env.example) como referencia:
 
 ```env
-NEXT_PUBLIC_API_URL=https://YOUR-RAILWAY-BACKEND.up.railway.app
+NEXT_PUBLIC_API_URL=https://YOUR-BACKEND.vercel.app
 NEXT_PUBLIC_WHATSAPP_NUMBER=573012799371
 ```
 
@@ -58,7 +58,7 @@ NEXT_PUBLIC_WHATSAPP_NUMBER=573012799371
 
 ## Conexión con backend
 
-- El frontend consume el backend FastAPI del mismo repositorio, desplegado en Railway.
+- El frontend consume el backend FastAPI del mismo repositorio, desplegado en otro proyecto de Vercel.
 - Todas las llamadas del formulario de contacto, login admin y panel usan `NEXT_PUBLIC_API_URL`.
 - En producción no se usa `localhost`.
 - El panel admin usa JWT y envía `Authorization: Bearer <token>`.
@@ -77,7 +77,7 @@ Configura el proyecto así:
 Variables necesarias en Vercel:
 
 ```env
-NEXT_PUBLIC_API_URL=https://YOUR-RAILWAY-BACKEND.up.railway.app
+NEXT_PUBLIC_API_URL=https://YOUR-BACKEND.vercel.app
 NEXT_PUBLIC_WHATSAPP_NUMBER=573012799371
 ```
 
@@ -89,4 +89,4 @@ NEXT_PUBLIC_WHATSAPP_NUMBER=573012799371
 
 ## Nota
 
-La guía full stack y la configuración del backend en Railway están en el README raíz.
+La guía full stack y la configuración del backend en Vercel están en el README raíz.

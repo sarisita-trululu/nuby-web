@@ -23,6 +23,24 @@ def main() -> None:
             check=True,
         )
 
+    admin_email = os.getenv("ADMIN_EMAIL")
+    admin_password = os.getenv("ADMIN_PASSWORD")
+    admin_name = os.getenv("ADMIN_NAME")
+
+    if admin_email and admin_password:
+        command = [
+            sys.executable,
+            "-m",
+            "app.seed",
+            "--admin-email",
+            admin_email,
+            "--admin-password",
+            admin_password,
+        ]
+        if admin_name:
+            command.extend(["--admin-name", admin_name])
+        subprocess.run(command, check=True)
+
 
 if __name__ == "__main__":
     main()
