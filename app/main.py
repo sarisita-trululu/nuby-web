@@ -44,7 +44,12 @@ app.add_middleware(
 
 initialize_directories()
 
-app.mount(settings.uploads_url_prefix, StaticFiles(directory=str(settings.uploads_path)), name="uploads")
+if settings.use_local_uploads:
+    app.mount(
+        settings.uploads_url_prefix,
+        StaticFiles(directory=str(settings.uploads_path)),
+        name="uploads",
+    )
 
 
 @app.exception_handler(RequestValidationError)

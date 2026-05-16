@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 
 from pydantic import Field, field_validator
@@ -9,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 
 
 class Settings(BaseSettings):
-    app_name: str = "Nuby Arango Perez API"
+    app_name: str = "Nuby Arango Pérez API"
     api_prefix: str = "/api"
     debug: bool = False
 
@@ -34,6 +35,11 @@ class Settings(BaseSettings):
     uploads_dir: str = Field(default="uploads", alias="UPLOAD_DIR")
     uploads_url_prefix: str = "/uploads"
     max_upload_size_mb: int = Field(default=5, alias="MAX_UPLOAD_SIZE_MB")
+    storage_backend: str = Field(
+        default="vercel_blob" if os.getenv("VERCEL") else "local",
+        alias="STORAGE_BACKEND",
+    )
+    blob_upload_prefix: str = Field(default="uploads", alias="BLOB_UPLOAD_PREFIX")
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -57,6 +63,15 @@ class Settings(BaseSettings):
 
         return [origin.strip() for origin in raw_value.split(",") if origin.strip()]
 
+    @field_validator("storage_backend")
+    @classmethod
+    def validate_storage_backend(cls, value: str) -> str:
+        normalized = value.strip().lower()
+        allowed = {"local", "vercel_blob"}
+        if normalized not in allowed:
+            raise ValueError(f"STORAGE_BACKEND debe ser uno de: {', '.join(sorted(allowed))}")
+        return normalized
+
     @property
     def project_root(self) -> Path:
         return BASE_DIR
@@ -67,6 +82,10 @@ class Settings(BaseSettings):
         if not path.is_absolute():
             path = self.project_root / path
         return path.resolve()
+
+    @property
+    def use_local_uploads(self) -> bool:
+        return self.storage_backend == "local"
 
 
 settings = Settings()

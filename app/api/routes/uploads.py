@@ -1,8 +1,8 @@
 from pathlib import Path
-from typing import Annotated
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile, status
+from vercel.blob import AsyncBlobClient
 
 from app.api.deps import get_current_admin
 from app.core.config import settings
@@ -32,29 +32,44 @@ async def upload_image(
     if file.content_type not in ALLOWED_CONTENT_TYPES:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="El archivo no corresponde a una imagen valida.",
+            detail="El archivo no corresponde a una imagen válida.",
         )
 
     max_size_bytes = settings.max_upload_size_mb * 1024 * 1024
     safe_name = slugify(Path(filename).stem) or "image"
     final_name = f"{safe_name}-{uuid4().hex}{extension}"
-    destination = settings.uploads_path / final_name
 
     total_size = 0
+    chunks: list[bytes] = []
     try:
-        with destination.open("wb") as output_file:
-            while chunk := await file.read(1024 * 1024):
-                total_size += len(chunk)
-                if total_size > max_size_bytes:
-                    output_file.close()
-                    destination.unlink(missing_ok=True)
-                    raise HTTPException(
-                        status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
-                        detail=f"La imagen supera el maximo permitido de {settings.max_upload_size_mb} MB.",
-                    )
-                output_file.write(chunk)
+        while chunk := await file.read(1024 * 1024):
+            total_size += len(chunk)
+            if total_size > max_size_bytes:
+                raise HTTPException(
+                    status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                    detail=f"La imagen supera el máximo permitido de {settings.max_upload_size_mb} MB.",
+                )
+            chunks.append(chunk)
     finally:
         await file.close()
 
-    public_url = f"{str(request.base_url).rstrip('/')}{settings.uploads_url_prefix}/{final_name}"
-    return {"filename": final_name, "url": public_url}
+    file_bytes = b"".join(chunks)
+
+    if settings.use_local_uploads:
+        destination = settings.uploads_path / final_name
+        with destination.open("wb") as output_file:
+            output_file.write(file_bytes)
+
+        public_url = f"{str(request.base_url).rstrip('/')}{settings.uploads_url_prefix}/{final_name}"
+        return {"filename": final_name, "url": public_url}
+
+    blob_client = AsyncBlobClient()
+    blob_path = f"{settings.blob_upload_prefix.strip('/')}/{final_name}"
+    blob = await blob_client.put(
+        blob_path,
+        file_bytes,
+        access="public",
+        add_random_suffix=False,
+        content_type=file.content_type or "application/octet-stream",
+    )
+    return {"filename": final_name, "url": blob.url}

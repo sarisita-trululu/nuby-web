@@ -20,7 +20,8 @@ SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False, expi
 
 
 def initialize_directories() -> None:
-    settings.uploads_path.mkdir(parents=True, exist_ok=True)
+    if settings.use_local_uploads:
+        settings.uploads_path.mkdir(parents=True, exist_ok=True)
 
     if parsed_url.get_backend_name().startswith("sqlite") and parsed_url.database not in (None, ":memory:"):
         db_path = Path(parsed_url.database)
