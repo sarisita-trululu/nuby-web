@@ -1,9 +1,8 @@
 import type { NextConfig } from "next";
 
-const productionApiUrl = "https://web-production-9b25b.up.railway.app";
 const apiUrlValue =
   process.env.NEXT_PUBLIC_API_URL?.trim() ||
-  (process.env.NODE_ENV === "development" ? "http://localhost:8000" : productionApiUrl);
+  (process.env.NODE_ENV === "development" ? "http://localhost:8000" : "");
 
 const remotePatterns = apiUrlValue
   ? [

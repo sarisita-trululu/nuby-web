@@ -1,5 +1,4 @@
 const LOCAL_API_URL = "http://localhost:8000";
-const PRODUCTION_API_URL = "https://web-production-9b25b.up.railway.app";
 
 function normalizeUrl(value: string) {
   return value.replace(/\/+$/, "");
@@ -16,7 +15,7 @@ export function getApiBaseUrl() {
     return LOCAL_API_URL;
   }
 
-  return PRODUCTION_API_URL;
+  return "";
 }
 
 export function requireApiBaseUrl() {
@@ -24,7 +23,7 @@ export function requireApiBaseUrl() {
 
   if (!apiUrl) {
     throw new Error(
-      "NEXT_PUBLIC_API_URL no esta configurada en produccion. Configura la URL real del backend FastAPI en Vercel.",
+      "NEXT_PUBLIC_API_URL no está configurada en producción. Configura la URL real del backend FastAPI en Vercel.",
     );
   }
 
