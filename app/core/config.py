@@ -1,9 +1,10 @@
 import json
 import os
 from pathlib import Path
+from typing import Annotated
 
 from pydantic import Field, field_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 
 BASE_DIR = Path(__file__).resolve().parents[2]
@@ -30,7 +31,8 @@ class Settings(BaseSettings):
     algorithm: str = "HS256"
     access_token_expire_minutes: int = Field(default=720, alias="ACCESS_TOKEN_EXPIRE_MINUTES")
 
-    cors_origins: list[str] = Field(
+    # NoDecode: el valor llega tal cual al validador (admite lista separada por comas o JSON).
+    cors_origins: Annotated[list[str], NoDecode] = Field(
         default_factory=lambda: [
             "https://nuby-web-wqdz.vercel.app",
             "https://nubypsicologa.com",
