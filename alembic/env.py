@@ -1,16 +1,19 @@
+import os
 from logging.config import fileConfig
 
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 from sqlalchemy.engine import make_url
 
-from app.core.config import settings
+from app.core.config import normalize_database_url, settings
 from app.database.base import Base
 import app.models  # noqa: F401
 
 
 config = context.config
-config.set_main_option("sqlalchemy.url", settings.database_url)
+# Para migraciones se prefiere la conexión directa de Neon (sin PgBouncer) si existe.
+migration_url = normalize_database_url(os.getenv("DATABASE_URL_UNPOOLED") or settings.database_url)
+config.set_main_option("sqlalchemy.url", migration_url.replace("%", "%%"))
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
@@ -40,7 +43,7 @@ def run_migrations_online() -> None:
         poolclass=pool.NullPool,
     )
 
-    url = make_url(settings.database_url)
+    url = make_url(migration_url)
 
     with connectable.connect() as connection:
         context.configure(

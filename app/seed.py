@@ -118,6 +118,10 @@ def upsert_admin(db, name: str, email: str, password: str) -> str:
     return f"Admin actualizado: {normalized_email}"
 
 
+def services_table_is_empty(db) -> bool:
+    return db.scalar(select(Service.id).limit(1)) is None
+
+
 def upsert_services(db) -> str:
     created = 0
     updated = 0
@@ -146,6 +150,11 @@ def main() -> None:
     parser.add_argument("--admin-email", default=os.getenv("ADMIN_EMAIL"))
     parser.add_argument("--admin-password", default=os.getenv("ADMIN_PASSWORD"))
     parser.add_argument("--skip-admin", action="store_true", help="Omite la creación o actualización del admin.")
+    parser.add_argument(
+        "--services-if-empty",
+        action="store_true",
+        help="Crea los servicios por defecto solo si la tabla services está vacía (no sobrescribe cambios del panel).",
+    )
     args = parser.parse_args()
 
     if not args.skip_admin and (not args.admin_email or not args.admin_password):
@@ -154,7 +163,10 @@ def main() -> None:
     initialize_directories()
 
     with SessionLocal() as db:
-        results = [upsert_services(db)]
+        if args.services_if_empty and not services_table_is_empty(db):
+            results = ["Servicios existentes conservados (no se modificaron)."]
+        else:
+            results = [upsert_services(db)]
         if not args.skip_admin:
             results.append(upsert_admin(db, args.admin_name, args.admin_email, args.admin_password))
         db.commit()

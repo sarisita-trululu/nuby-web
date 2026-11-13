@@ -9,6 +9,17 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 BASE_DIR = Path(__file__).resolve().parents[2]
 
 
+def normalize_database_url(value: str) -> str:
+    """Convierte `postgres://` / `postgresql://` en `postgresql+psycopg://` (driver psycopg 3)."""
+    if not isinstance(value, str):
+        return value
+    raw_value = value.strip()
+    for prefix in ("postgres://", "postgresql://"):
+        if raw_value.startswith(prefix):
+            return "postgresql+psycopg://" + raw_value[len(prefix):]
+    return raw_value
+
+
 class Settings(BaseSettings):
     app_name: str = "Nuby Arango Pérez API"
     api_prefix: str = "/api"
@@ -32,6 +43,9 @@ class Settings(BaseSettings):
         alias="CORS_ORIGINS",
     )
 
+    # Expresión regular opcional para permitir orígenes dinámicos (por ejemplo, los Preview de Vercel).
+    cors_origin_regex: str | None = Field(default=None, alias="CORS_ORIGIN_REGEX")
+
     uploads_dir: str = Field(default="uploads", alias="UPLOAD_DIR")
     uploads_url_prefix: str = "/uploads"
     max_upload_size_mb: int = Field(default=5, alias="MAX_UPLOAD_SIZE_MB")
@@ -47,6 +61,23 @@ class Settings(BaseSettings):
         case_sensitive=False,
         extra="ignore",
     )
+
+    @field_validator("database_url", mode="before")
+    @classmethod
+    def validate_database_url(cls, value: str) -> str:
+        """Neon y otros proveedores entregan `postgres://` o `postgresql://`.
+
+        SQLAlchemy 2 no acepta `postgres://` y el único driver instalado es psycopg 3,
+        así que se fuerza el dialecto `postgresql+psycopg://`.
+        """
+        return normalize_database_url(value)
+
+    @field_validator("cors_origin_regex", mode="before")
+    @classmethod
+    def empty_regex_to_none(cls, value: str | None) -> str | None:
+        if isinstance(value, str) and not value.strip():
+            return None
+        return value
 
     @field_validator("cors_origins", mode="before")
     @classmethod

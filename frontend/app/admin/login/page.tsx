@@ -1,5 +1,6 @@
 "use client";
 
+import { isAxiosError } from "axios";
 import { LockKeyhole, Mountain, Shield } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -10,6 +11,31 @@ import { InputField } from "@/components/ui/input-field";
 import { useAuthStore } from "@/hooks/use-auth-store";
 import { loginAdmin } from "@/lib/admin-api";
 import type { LoginPayload } from "@/lib/types";
+
+function describeLoginError(error: unknown) {
+  if (isAxiosError(error)) {
+    const status = error.response?.status;
+    if (status === 401) {
+      return "Correo o contraseña incorrectos.";
+    }
+    if (status === 403) {
+      return "La cuenta no se encuentra activa o no tiene permisos de administración.";
+    }
+    if (status === 422) {
+      return "Revisa el correo y la contraseña (mínimo 8 caracteres).";
+    }
+    if (!error.response) {
+      return "No fue posible conectar con el servidor. Intenta nuevamente en unos minutos.";
+    }
+    return "El servidor no pudo procesar el inicio de sesión. Intenta nuevamente más tarde.";
+  }
+
+  if (error instanceof Error && error.message.includes("NEXT_PUBLIC_API_URL")) {
+    return "El panel no está conectado con el servidor (falta configurar la URL de la API).";
+  }
+
+  return "No fue posible iniciar sesión. Intenta nuevamente.";
+}
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -40,8 +66,8 @@ export default function AdminLoginPage() {
       const response = await loginAdmin(values);
       setSession(response.access_token, response.user);
       router.replace(nextPath);
-    } catch {
-      setError("Credenciales inválidas o usuario sin acceso.");
+    } catch (loginError) {
+      setError(describeLoginError(loginError));
     }
   });
 

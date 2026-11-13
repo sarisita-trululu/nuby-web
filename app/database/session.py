@@ -1,8 +1,11 @@
 from pathlib import Path
 
+import os
+
 from sqlalchemy import create_engine
 from sqlalchemy.engine import make_url
 from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.pool import NullPool
 
 from app.core.config import settings
 
@@ -13,6 +16,10 @@ database_url = settings.database_url
 parsed_url = make_url(database_url)
 if parsed_url.get_backend_name().startswith("sqlite"):
     engine_kwargs["connect_args"] = {"check_same_thread": False}
+elif os.getenv("VERCEL"):
+    # En Vercel Functions cada instancia es efímera: no se mantiene un pool propio.
+    # El pooling lo hace Neon (usar la cadena de conexión "pooled" en DATABASE_URL).
+    engine_kwargs["poolclass"] = NullPool
 
 engine = create_engine(database_url, **engine_kwargs)
 

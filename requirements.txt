@@ -1,13 +1,15 @@
-fastapi
-uvicorn[standard]
-sqlalchemy
-alembic
-psycopg[binary]
-pydantic
-pydantic-settings
-python-jose[cryptography]
-passlib[bcrypt]
+# Versiones fijadas y verificadas (PostgreSQL 16 + Python 3.12/3.13) el 2026-11-12.
+# No subir `vercel` a >=0.12: eliminó AsyncBlobClient, que usa app/api/routes/uploads.py.
+fastapi==0.162.5
+uvicorn[standard]==0.54.0
+sqlalchemy==2.1.8
+alembic==1.20.1
+psycopg[binary]==3.3.9
+pydantic==2.14.3
+pydantic-settings==2.16.2
+python-jose[cryptography]==3.5.0
+passlib[bcrypt]==1.7.4
 bcrypt==4.0.1
-python-multipart
-email-validator
-vercel
+python-multipart==0.0.33
+email-validator==2.3.0
+vercel==0.11.6
