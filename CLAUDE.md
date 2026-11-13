@@ -75,7 +75,7 @@ Proveedor de PostgreSQL en producción: **[PENDIENTE DE VERIFICAR]**. El README 
 - Frontend: el token se guarda en `localStorage` (clave `nuby-admin-auth`). `AdminGuard` llama a `/api/admin/me`. Si falla, borra la sesión y redirige a `/admin/login`. **No hay middleware de Next.js**: la protección ocurre del lado del cliente y la seguridad real está en la API.
 - La página de login muestra siempre "Credenciales inválidas o usuario sin acceso." ante **cualquier** error: también cuando la API no responde, hay un error de CORS o falta `NEXT_PUBLIC_API_URL`.
 - Correo del admin en producción (según la migración 000002): `admin@nubyarango.com`. La contraseña no está en el repo; solo su hash bcrypt (no coincide con el `ChangeMe123!` de ejemplo).
-- **Cuidado:** si `ADMIN_EMAIL` y `ADMIN_PASSWORD` están definidas en Vercel, cada build del backend vuelve a fijar la contraseña del admin (`app.seed`).
+- Desde la rama `migracion-vercel`, el build ya **no** ejecuta el seed del admin aunque existan `ADMIN_EMAIL`/`ADMIN_PASSWORD`. Restablecer la contraseña solo se hace a mano y con autorización: `python -m app.seed --admin-email admin@nubyarango.com --admin-password '<nueva>'`.
 
 ## 5. Rutas
 
@@ -137,7 +137,7 @@ No hay suite de tests automatizados. Verificación manual:
 
 Son dos proyectos de Vercel conectados al mismo repo (según el README):
 
-1. **Backend:** Root Directory `/`, Framework Preset `Other`, runtime Python, entrada `app/index.py`. El build ejecuta `tools/vercel_build.py` (valida `DATABASE_URL` y `SECRET_KEY`, hace la migración y, si hay variables ADMIN_*, el seed).
+1. **Backend:** Root Directory `/`, Framework Preset `FastAPI`, runtime Python, entrada `index.py` / `app/index.py`. El build ejecuta `tools/vercel_build.py`: valida `DATABASE_URL` y `SECRET_KEY`, ejecuta `alembic upgrade head` (con `DATABASE_URL_UNPOOLED` si existe) y crea los 7 servicios por defecto **solo si la tabla está vacía**. Nunca toca la contraseña del admin.
 2. **Frontend:** Root Directory `frontend`, preset Next.js, `npm install` y `npm run build`.
 
 Un push a `main` dispara los despliegues de producción (si la integración Git está activa) **[PENDIENTE DE VERIFICAR]**. No se publica nada sin autorización.
@@ -194,7 +194,42 @@ Según el historial (README y `.env.example` antes del commit 0336f53), la produ
 5. Comprobar en la base de datos que `admin@nubyarango.com` existe, con `is_active=true` y `role=admin`, antes de pensar en restablecer la contraseña.
 6. Si hay que restablecer la contraseña: `python -m app.seed --admin-email admin@nubyarango.com --admin-password '<nueva>'` contra la base de datos de producción. Hace un upsert (no duplica) y además actualiza los 7 servicios por defecto. Solo con autorización.
 
-## 13. Reglas para trabajar en este repo
+## 13. Migración a Vercel + Neon (rama `migracion-vercel`, noviembre de 2026)
+
+Railway queda fuera de la arquitectura. Los datos que vivían en su volumen (blog, testimonios, experiencias creadas desde el panel, textos editados, mensajes de contacto e imágenes subidas) **no se recuperaron**. El admin original se recrea desde la migración `20260426_000002` con su hash bcrypt original.
+
+### Cambios de código
+- `requirements.txt` con versiones fijadas (`vercel==0.11.6`).
+- `app/core/config.py`: normaliza `postgres://` → `postgresql+psycopg://`; nueva variable `CORS_ORIGIN_REGEX`.
+- `app/database/session.py`: `NullPool` en Vercel (el pooling lo hace Neon).
+- `alembic/env.py`: usa `DATABASE_URL_UNPOOLED` para migrar si existe.
+- `app/seed.py`: opción `--services-if-empty`.
+- `tools/vercel_build.py`: migraciones + servicios por defecto si la tabla está vacía; sin seed del admin.
+- `frontend/next.config.ts`: permite imágenes de `*.public.blob.vercel-storage.com`.
+- `frontend/app/admin/login/page.tsx`: mensajes de error reales.
+
+### Verificación local (PostgreSQL 16)
+- Build ejecutado dos veces: 1 solo usuario (`admin@nubyarango.com`, rol `admin`, activo, hash bcrypt original) y 7 servicios; la segunda ejecución no duplica ni modifica nada.
+- 28/28 pruebas de API: login incorrecto 401, sin token 401, `/api/admin/me`, CRUD de servicios, experiencias, blog, testimonios y configuración, mensajes de contacto, subida de imágenes y rechazo de formatos inválidos.
+- Un servicio editado se conserva tras un nuevo build. CORS acepta producción y Previews y rechaza otros orígenes.
+- `npx tsc --noEmit` sin errores.
+
+### Recursos configurados en Vercel (equipo `saravalg29-9323s-projects`)
+- **Neon** `nuby-production-db` (plan Free, Neon ID `broad-mud-92687160`; estaba vacía) conectada al proyecto `nuby-web` (Production + Preview) con el prefijo `DATABASE` → `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, etc.
+- **Vercel Blob** `nuby-imagenes` (público, iad1) conectado a `nuby-web` → `BLOB_READ_WRITE_TOKEN`.
+- `nuby-web` (backend): `SECRET_KEY` (sensitive, generada), `STORAGE_BACKEND=vercel_blob`, `CORS_ORIGINS`, `CORS_ORIGIN_REGEX`. Dominio `api.nubypsicologa.com` añadido (pendiente de DNS).
+- `nuby-web-wqdz` (frontend): `NEXT_PUBLIC_API_URL=https://api.nubypsicologa.com`, `NEXT_PUBLIC_WHATSAPP_NUMBER`. El sitio publicado no cambia hasta un nuevo despliegue de producción.
+
+### DNS (Hostinger, nameservers dns-parking.com)
+- `api` → CNAME `469fd61128e57fb9.vercel-dns-017.com`
+
+### Pendiente
+1. Instalar la app de Claude en GitHub para poder hacer push de `migracion-vercel`.
+2. Crear el CNAME de `api` en Hostinger.
+3. Pruebas en la nube (Preview) y aprobación final para fusionar con `main`.
+4. Decisión del plan de Vercel: Hobby es solo para uso no comercial; Pro cuesta USD 20 al mes por usuario.
+
+## 14. Reglas para trabajar en este repo
 
 - No reconstruir ni cambiar el framework ni el diseño visual.
 - No modificar la base de datos de producción, usuarios, contraseñas ni credenciales sin autorización explícita.
