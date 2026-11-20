@@ -220,14 +220,21 @@ Railway queda fuera de la arquitectura. Los datos que vivían en su volumen (blo
 - `nuby-web` (backend): `SECRET_KEY` (sensitive, generada), `STORAGE_BACKEND=vercel_blob`, `CORS_ORIGINS`, `CORS_ORIGIN_REGEX`. Dominio `api.nubypsicologa.com` añadido (pendiente de DNS).
 - `nuby-web-wqdz` (frontend): `NEXT_PUBLIC_API_URL=https://api.nubypsicologa.com`, `NEXT_PUBLIC_WHATSAPP_NUMBER`. El sitio publicado no cambia hasta un nuevo despliegue de producción.
 
-### DNS (Hostinger, nameservers dns-parking.com)
-- `api` → CNAME `469fd61128e57fb9.vercel-dns-017.com`
+### DNS (Hostinger, nameservers dns-parking.com; el dominio está en otra cuenta de Hostinger, no en la de saravalg29)
+- `api` → CNAME `469fd61128e57fb9.vercel-dns-017.com` ✅ (creado el 17 de noviembre de 2026, HTTPS activo)
+- `api-preview` → no creado (opcional; el dominio existe en Vercel ligado a la rama `migracion-vercel`)
+
+### Estado en la nube (20 de noviembre de 2026)
+- Backend `nuby-web` desplegado en **producción** desde `migracion-vercel` (commit 3675280), autorizado por la usuaria. Responde en `https://api.nubypsicologa.com`. El sitio público no lo usa todavía.
+- Build en Vercel: migraciones aplicadas en Neon (esquema + admin original) y 7 servicios creados.
+- 20/20 pruebas sin sesión en la nube (salud, lectura pública, 401 sin token o con token inválido en todas las rutas admin, contacto 201/422, 404).
+- Frontend preview (`nuby-web-wqdz-git-migracion-vercel-…vercel.app`) muestra los datos de Neon. El login con contraseña incorrecta llega a la API y muestra "Correo o contraseña incorrectos." CORS verificado desde el preview. Vista móvil revisada.
+- Datos de prueba que hay que borrar: 1 mensaje de contacto "Prueba Migracion".
 
 ### Pendiente
-1. Instalar la app de Claude en GitHub para poder hacer push de `migracion-vercel`.
-2. Crear el CNAME de `api` en Hostinger.
-3. Pruebas en la nube (Preview) y aprobación final para fusionar con `main`.
-4. Decisión del plan de Vercel: Hobby es solo para uso no comercial; Pro cuesta USD 20 al mes por usuario.
+1. Login real de Nuby en el preview y prueba del CRUD y la subida de imágenes a Blob con su sesión.
+2. Aprobación final: fusionar `migracion-vercel` → `main` (despliega nubypsicologa.com).
+3. Decisión del plan de Vercel: Hobby es solo para uso no comercial; Pro cuesta USD 20 al mes por usuario.
 
 ## 14. Reglas para trabajar en este repo
 
