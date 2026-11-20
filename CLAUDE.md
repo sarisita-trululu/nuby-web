@@ -229,11 +229,15 @@ Railway queda fuera de la arquitectura. Los datos que vivían en su volumen (blo
 - Build en Vercel: migraciones aplicadas en Neon (esquema + admin original) y 7 servicios creados.
 - 20/20 pruebas sin sesión en la nube (salud, lectura pública, 401 sin token o con token inválido en todas las rutas admin, contacto 201/422, 404).
 - Frontend preview (`nuby-web-wqdz-git-migracion-vercel-…vercel.app`) muestra los datos de Neon. El login con contraseña incorrecta llega a la API y muestra "Correo o contraseña incorrectos." CORS verificado desde el preview. Vista móvil revisada.
-- Datos de prueba que hay que borrar: 1 mensaje de contacto "Prueba Migracion".
+- Datos de prueba: el mensaje "Prueba Migracion" y todos los registros de prueba ya se borraron. Queda una imagen de 8×8 px (`uploads/prueba-migracion-*.png`) en Vercel Blob, que no afecta al sitio.
+
+### Administradores (20 de noviembre de 2026)
+- `admin@nubyarango.com` (id 1): admin original recreado por la migración 000002. Nadie recuerda su contraseña; se conserva sin cambios.
+- `admin@nubypsicologa.com` (id 2): **nuevo administrador creado a pedido de la usuaria** (INSERT en Neon con hash bcrypt; la contraseña se le entregó a ella y no está en el repo).
+- Con la sesión del id 2 se verificaron en la nube: `/api/admin/me`, el CRUD de servicios, experiencias, blog, testimonios y configuración, los mensajes (marcar como leído y borrar) y la subida a Vercel Blob (URL pública `*.public.blob.vercel-storage.com`, imagen accesible). Los formatos inválidos se rechazan. 24/24 OK.
 
 ### Pendiente
-1. Login real de Nuby en el preview y prueba del CRUD y la subida de imágenes a Blob con su sesión.
-2. Aprobación final: fusionar `migracion-vercel` → `main` (despliega nubypsicologa.com).
+1. Aprobación final: fusionar `migracion-vercel` → `main` (despliega nubypsicologa.com).
 3. Decisión del plan de Vercel: Hobby es solo para uso no comercial; Pro cuesta USD 20 al mes por usuario.
 
 ## 14. Reglas para trabajar en este repo
